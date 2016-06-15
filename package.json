@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "basic-auth": "^1.0.4",
+    "bluebird": "^3.4.0"
+  }
+}

@@ -37,19 +37,18 @@ prompt([
   {type: 'input', message: 'Enter identification', name: 'identifier'},
 ]).then(function(answers) {
   var claims, token;
-  console.log(answers);
-  var iat = (new Date).getTime();
-  var nonce = crypto.randomBytes(16).toString('hex');
+  var iat = parseInt((new Date).getTime() / 1000);
+  var jti = crypto.randomBytes(16).toString('hex');
   claims = {
       shares: answers.amount,
-      nonce: nonce,
+      jti: jti,
       iat: iat,
       iss: 'stefan.co.jp'
   };
   token = createToken(claims, answers.passphrase);
-  unsignedToken = token.split('.')[0] + token.split('.')[1];
-  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+nonce+','+answers.amount+','+unsignedToken+"\n", function(err) {
-      console.error('Error appending to issued_shares.csv');
+  unsignedToken = token.split('.')[0] + '.' + token.split('.')[1];
+  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+unsignedToken+"\n", function(err) {
+      if (err) console.error(err.stack);
   })
   console.log(token);
 })

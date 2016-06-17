@@ -1,6 +1,6 @@
-# Stefan Corporation
+# Stefan Corporation Japan
 
-Stefan Corporation is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) in a way that is regulated by a government body.
+Stefan Corporation Japan is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) in a way that is regulated by a government body.
 
 Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
 

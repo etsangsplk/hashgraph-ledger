@@ -4,6 +4,8 @@ Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is th
 
 Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
 
+It is planned to integrate the issuance of these kind of shares into a blockchain network. The technology base has not been decided yet.
+
 The code in this repository contains tools to issue, validate and trade company shares (kabushiki).
 
 You can validate a share on the [JWT website](http://jwt.io) using the following public key

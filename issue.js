@@ -4,11 +4,8 @@ fs = require('fs');
 readline = require('readline');
 crypto = require('crypto');
 co = require('co');
+inquirer = require('inquirer');
 
-rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 createToken = function(claims, passphrase) {
   var claimsString, headerString, headers, privateKey, rsa, signature, unsignedToken;
@@ -19,9 +16,6 @@ createToken = function(claims, passphrase) {
     'alg': 'RS256',
     'typ': 'JWT'
   };
-  claims.iat = (new Date).getTime();
-  claims.nonce = crypto.randomBytes(16).toString('hex');
-  claims.iss = 'stefan.co.jp';
   headerString = new Buffer(JSON.stringify(headers)).toString('base64');
   claimsString = new Buffer(JSON.stringify(claims)).toString('base64');
   unsignedToken = headerString + '.' + claimsString;
@@ -36,37 +30,28 @@ createToken = function(claims, passphrase) {
   return unsignedToken + '.' + signature;
 };
 
-hiddenInput = function(query, callback) {
-  var stdin;
-  stdin = process.openStdin();
-  process.stdin.on('data', function(char) {
-    char = char + '';
-    switch (char) {
-      case '\n':
-      case '\u000d':
-      case '\u0004':
-        stdin.pause();
-      default:
-        process.stdout.write('[2K[200D' + query + Array(rl.line.length + 1).join('*'));
-        break;
-    }
-  });
-  return rl.question(query, function(value) {
-    if (rl.history) {
-      rl.history = rl.history.slice(1);
-    }
-    callback(value);
-  });
-};
-
-hiddenInput('Enter Passphrase: ', function(input) {
-    rl.close();
-    var claims, token;
-    claims = {
-      shares: 500,
-      id: 'mynumber:test'
-    };
-    token = createToken(claims, input);
-    console.log(token);
-});
+var prompt = inquirer.createPromptModule();
+prompt([
+  {type: 'password', message: 'Enter passphrase', name: 'passphrase'},
+  {type: 'input', message: 'Enter amount of shares', name: 'amount'},
+  {type: 'input', message: 'Enter identification', name: 'identifier'},
+]).then(function(answers) {
+  var claims, token;
+  console.log(answers);
+  var iat = (new Date).getTime();
+  var nonce = crypto.randomBytes(16).toString('hex');
+  claims = {
+      shares: answers.amount,
+      nonce: nonce,
+      iat: iat,
+      iss: 'stefan.co.jp'
+  };
+  token = createToken(claims, answers.passphrase);
+  unsignedToken = token.split('.')[0] + token.split('.')[1];
+  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+nonce+','+answers.amount+','+unsignedToken+"\n", function(err) {
+      console.error('Error appending to issued_shares.csv');
+  })
+  console.log(token);
+})
+.catch(function(err) {console.error(err.stack); process.exit(1);})
 

@@ -60,7 +60,7 @@ function start() {
     var errorMessage = false;
     
     try {
-        testJWT();
+        //testJWT();
     }
     catch (err) {
         if (err.message.indexOf('bad password read') !== -1) {

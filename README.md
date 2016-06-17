@@ -6,8 +6,7 @@ Issued shares contain a JSON web token that embed the amount of shares as the cl
 
 It is planned to integrate the issuance of these kind of shares into a blockchain network. The technology base has not been decided yet.
 
-Stefan Corporation is registering the public JWT claim name `shares` to store the amount of shares held by the subscriber according to https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#rfc.section.4.2
-Once approved, a detailed specification will be published in English and Japanese.
+Stefan Corporation is registering the JWT claim name `shares` to store the amount of shares held by the subscriber with the IETF.
 
 The code in this repository contains tools to issue, validate and trade company shares (kabushiki).
 
@@ -23,6 +22,11 @@ You can validate a share on the [JWT website](http://jwt.io) using the following
     dwIDAQAB
     -----END PUBLIC KEY-----
     
+
+# JWT `shares` claim name specification
+
+The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the "iss" claim is claiming to be owning. This value shall only be applicable if the "iss" value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the "iss" claim.
+
 # Become a shareholder
 
 There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.

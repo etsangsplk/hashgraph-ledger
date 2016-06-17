@@ -23,10 +23,10 @@ You can validate a share on the [JWT website](http://jwt.io) using the following
     -----END PUBLIC KEY-----
     
 
-# JWT `shares` claim name specification
+## JWT `shares` claim name specification
 
 The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the "iss" claim is claiming to be owning. This value shall only be applicable if the "iss" value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the "iss" claim.
 
-# Become a shareholder
+## Become a shareholder
 
 There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.

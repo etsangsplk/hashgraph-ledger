@@ -27,6 +27,26 @@ You can validate a share on the [JWT website](http://jwt.io) using the following
 
 The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` claim is claiming to be owning. This value shall only be applicable if the `iss` claim value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
 
+## Moving company assets into the blockchain
+
+In principle, it requires three steps:
+
+1. Key Creation: The person authorized to transfer assets (usually the company representative) creates an encrypted signature key.
+2. Identification: The holders (legal entities) of company assets are identified and are assigned a unique identifier.
+3. Transfer: The person authorized to transfer the assets creates signed tokens and stores them in the blockchain.
+
+#### 1. Key Creation
+
+The key creation process is the same as creating a standard SSL private and public key pair. The private key is the signature key and the public key becomes the verification key. Technical instructions coming soon.
+
+#### 2. Identification
+
+// TODO
+
+#### 3. Transfer
+
+// TODO
+
 ## Become a shareholder
 
 There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.

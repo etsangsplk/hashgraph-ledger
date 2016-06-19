@@ -1,16 +1,14 @@
 # Stefan Corporation
 
-Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) that are regulated by a government body (Japan).
+Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) regulated by a government body (Japan) utilizing blockchain technology.
 
-It is planned to integrate the allotment of shares into a blockchain network. The technology base has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, the account can be accessed from anywhere without the need for a wallet.
+Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain.
 
-Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
-
-Stefan Corporation is registering the JWT claim name `shares` to store the amount of shares held by the subscriber with the IETF.
+The blockchain technology base to support the storage has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, users can interact with the blockchain without the need for a wallet file or online wallet service.
 
 The code in this repository contains tools to issue, validate and trade company shares (kabushiki).
 
-You can validate a share on the [JWT website](http://jwt.io) using the following public key
+You can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
 
     -----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAojjKH5tGflndQLj0T2i5
@@ -24,6 +22,8 @@ You can validate a share on the [JWT website](http://jwt.io) using the following
     
 
 #### JWT `shares` claim name specification
+
+Stefan Corporation is registering the JWT claim name `shares` to store the amount of shares held by the subscriber with the IETF.
 
 The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` claim is claiming to be owning. This value shall only be applicable if the `iss` claim value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
 

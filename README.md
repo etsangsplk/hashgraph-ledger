@@ -33,7 +33,7 @@ In principle, it requires three steps:
 
 1. Key Creation: The person authorized to transfer assets (usually the company representative) creates an encrypted signature key.
 2. Identification: The holders (legal entities) of company assets are identified and are assigned a unique identifier.
-3. Transfer: The person authorized to transfer the assets creates signed tokens and stores them in the blockchain.
+3. Transfer: The person authorized to transfer the assets creates signed tokens and stores them in the blockchain. The holders receive printed certificates containing the JWT and share amount.
 
 #### 1. Key Creation
 

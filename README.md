@@ -2,9 +2,9 @@
 
 Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) that are regulated by a government body (Japan).
 
-Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
+It is planned to integrate the allotment of shares into a blockchain network. The technology base has not been decided yet.
 
-It is planned to integrate the issuance of these kind of shares into a blockchain network. The technology base has not been decided yet.
+Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
 
 Stefan Corporation is registering the JWT claim name `shares` to store the amount of shares held by the subscriber with the IETF.
 

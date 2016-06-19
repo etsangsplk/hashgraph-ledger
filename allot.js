@@ -22,7 +22,7 @@ createToken = function(claims, passphrase) {
   rsa = crypto.createSign('RSA-SHA256');
   rsa.write(unsignedToken);
   rsa.end();
-  privateKey = fs.readFileSync('./privkey.pem');
+  privateKey = fs.readFileSync('./signkey.pem');
   signature = rsa.sign({
     key: privateKey,
     passphrase: passphrase

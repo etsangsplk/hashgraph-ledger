@@ -4,7 +4,7 @@ Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is th
 
 Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain.
 
-The blockchain technology base to support the storage has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, users can interact with the blockchain without the need for a wallet file or online wallet service.
+The blockchain technology base to store the value has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, users can interact with the blockchain without the need for a wallet file or online wallet service.
 
 The code in this repository contains tools to issue, validate and trade company shares (kabushiki).
 

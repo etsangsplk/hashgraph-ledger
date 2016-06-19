@@ -2,7 +2,7 @@
 
 Stefan Corporation (ステファン株式会社, sutefuan kabushikikaisha) is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) that are regulated by a government body (Japan).
 
-It is planned to integrate the allotment of shares into a blockchain network. The technology base has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, the account can be accessed from anywhere without the need to for a wallet.
+It is planned to integrate the allotment of shares into a blockchain network. The technology base has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, the account can be accessed from anywhere without the need for a wallet.
 
 Issued shares contain a JSON web token that embed the amount of shares as the claim payload.
 

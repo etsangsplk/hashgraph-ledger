@@ -1,3 +1,5 @@
+var useExperimentalBlockchain = true;
+
 var co, createToken, crypto, fs, hiddenInput, readline, rl;
 
 fs = require('fs');
@@ -5,7 +7,6 @@ readline = require('readline');
 crypto = require('crypto');
 co = require('co');
 inquirer = require('inquirer');
-
 
 createToken = function(claims, passphrase) {
   var claimsString, headerString, headers, privateKey, rsa, signature, unsignedToken;
@@ -35,7 +36,8 @@ prompt([
   {type: 'password', message: 'Enter passphrase', name: 'passphrase'},
   {type: 'input', message: 'Enter amount of shares', name: 'amount'},
   {type: 'input', message: 'Enter identification', name: 'identifier'},
-]).then(function(answers) {
+])
+.then(function(answers) {
   var claims, token;
   var iat = parseInt((new Date).getTime() / 1000);
   var jti = crypto.randomBytes(16).toString('hex');
@@ -47,10 +49,29 @@ prompt([
   };
   token = createToken(claims, answers.passphrase);
   unsignedToken = token.split('.')[0] + '.' + token.split('.')[1];
+  
   fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+unsignedToken+"\n", function(err) {
       if (err) console.error(err.stack);
   })
   console.log(token);
+  
+  // Store token in blockchain as proof-of-stake
+  // TODO: replace with something that is actually working (live blockchain)
+  if (useExperimentalBlockchain) {
+    Ledger = require('./ledger')
+    Ledger.init(/* {privateKey: privateKey }*/)
+    .then(function(ledger) {
+      return ledger.storeValue(answers.identifier, token)
+    })
+    .then(function(result) {
+      // Value has been stored in the blockchain ledger
+      // console.log(result)
+    })
+  }
+  
 })
-.catch(function(err) {console.error(err.stack); process.exit(1);})
+.catch(function(err) {
+  console.error(err.stack); 
+  process.exit(1);
+})
 

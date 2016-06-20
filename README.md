@@ -6,7 +6,7 @@ Issued shares take the form of JSON web tokens that embed the amount of shares i
 
 The blockchain technology base to store the value has not been decided yet. The current proposal is to develop or modify a codebase to use standard hashed RSA-SHA256 public keys created with open ssl tools as addresses (as opposed to proprietary key formats used in bitcoin). The huge benefit of this approach is that this allows one to secure the private key with a passphrase and store it inside the actual blockchain without a security risk (given a strong non-bruteforcable password). That way, users can interact with the blockchain without the need for a wallet file or online wallet service.
 
-The code in this repository contains tools to issue, validate and trade company shares (kabushiki).
+The code in this repository contains tools to issue company shares (kabushiki). Code to trade and validate values will be added later.
 
 You can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
 

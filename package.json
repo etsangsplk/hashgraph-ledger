@@ -3,6 +3,7 @@
     "basic-auth": "^1.0.4",
     "bluebird": "^3.4.0",
     "co": "^4.6.0",
-    "inquirer": "^1.0.3"
+    "inquirer": "^1.0.3",
+    "nedb": "^1.8.0"
   }
 }

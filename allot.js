@@ -7,29 +7,8 @@ readline = require('readline');
 crypto = require('crypto');
 co = require('co');
 inquirer = require('inquirer');
-
-createToken = function(claims, passphrase) {
-  var claimsString, headerString, headers, privateKey, rsa, signature, unsignedToken;
-  if (typeof claims === 'undefined') {
-    claims = {};
-  }
-  headers = {
-    'alg': 'RS256',
-    'typ': 'JWT'
-  };
-  headerString = new Buffer(JSON.stringify(headers)).toString('base64');
-  claimsString = new Buffer(JSON.stringify(claims)).toString('base64');
-  unsignedToken = headerString + '.' + claimsString;
-  rsa = crypto.createSign('RSA-SHA256');
-  rsa.write(unsignedToken);
-  rsa.end();
-  privateKey = fs.readFileSync('./signkey.pem');
-  signature = rsa.sign({
-    key: privateKey,
-    passphrase: passphrase
-  }, 'base64');
-  return unsignedToken + '.' + signature;
-};
+createToken = require('./create_token')
+Ledger = require('./ledger')
 
 var prompt = inquirer.createPromptModule();
 prompt([
@@ -58,7 +37,7 @@ prompt([
   // Store token in blockchain as proof-of-stake
   // TODO: replace with something that is actually working (live blockchain)
   if (useExperimentalBlockchain) {
-    Ledger = require('./ledger')
+    
     Ledger.init(/* {privateKey: privateKey }*/)
     .then(function(ledger) {
       return ledger.storeValue(answers.identifier, token)

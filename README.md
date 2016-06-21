@@ -12,7 +12,7 @@ The blockchain technology that will be responsible to store the tokens has not b
 
 At the same time, alternative efforts are underway to create a publicly accessible node using the [Hyperledger](http://github.com/hyperledger/hyperledger) codebase and store the tokens inside the Hyperledger blockchain using [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
 
-You can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
+Currently, shareholders can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
 
     -----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAojjKH5tGflndQLj0T2i5

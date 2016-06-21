@@ -1,6 +1,6 @@
 # Stefan.co.jp
 
-The code in this repository contains the source to the (Stefan Corporation Website)[https://stefan.co.jp] and tools to issue regulated company shares (kabushiki) as values that can be stored in a blockchain.
+The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) as values that can be stored in a blockchain.
 
 ## Stefan Corporation Shares
 
@@ -10,7 +10,7 @@ Issued shares take the form of JSON web tokens that embed the amount of shares i
 
 The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based blockchain called `QuantumLedger`. This experimental blockchain is still in the early stages. For addressing purposes, it uses base64 encoded public key data defined in (RFC 4716)[https://tools.ietf.org/html/rfc4716#section-3.4].
 
-At the same time, alternative efforts are underway to create a publicly accessible node using the [Hyperledger](http://github.com/hyperledger/hyperledger) codebase and store the tokens inside the Hyperledger blockchain using [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). A collaborative project proposal can be found (here)[https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing]. 
+At the same time, alternative efforts are underway to create a publicly accessible node using the [Hyperledger](http://github.com/hyperledger/hyperledger) codebase and store the tokens inside the Hyperledger blockchain using [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
 
 You can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
 

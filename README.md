@@ -8,7 +8,7 @@ Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is t
 
 Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain.
 
-The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based blockchain called `QuantumLedger`. This experimental blockchain is still in the early stages. For addressing purposes, it uses base64 encoded public key data defined in (RFC 4716)[https://tools.ietf.org/html/rfc4716#section-3.4].
+The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based blockchain called `QuantumLedger`. This experimental blockchain is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
 
 At the same time, alternative efforts are underway to create a publicly accessible node using the [Hyperledger](http://github.com/hyperledger/hyperledger) codebase and store the tokens inside the Hyperledger blockchain using [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
 

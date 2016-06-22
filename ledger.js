@@ -12,12 +12,17 @@ var blockHashFile = 'ledgerHash.txt';
 var fs = require('fs');
 var crypto = require('crypto');
 var Datastore = require('nedb');
+var createToken = require('./jwt').createToken;
+var parseToken = require('./jwt').parseToken;
+var safeEval = require('safe-eval')
 
 var ledgerState = new Datastore({filename: ledgerStateFile});
 ledgerState.ensureIndex({fieldName: 'identifier', unique: true});
 ledgerState.loadDatabase();
 
-var currentBlockHash = fs.readFileSync(blockHashFile);
+var currentBlockHash = fs.readFileSync(blockHashFile).toString();
+
+var sendTransaction, receiveTransaction;
 
 function init() {
   return new Promise(function(resolve, reject) {
@@ -32,49 +37,63 @@ function init() {
       }
     })
     .on('end', function() {
-      // commitTransaction takes a function that takes the ledger state as argument and returns a promise.
-      // the promise "promises" to modify the ledger in a regulated, truthful way.
-      // TODO: refactor to be able to call something like ledger.commitTransaction({contract: fn, parentBlockHash: int, publicKey: pk, signature: sign...})
-      var commitTransaction = function(tx) {
-        return new Promise(function(resolve, reject) {
-          var txFn = tx.fn;
-          if (currentBlockHash != tx.parentBlockHash) reject("Wrong parent block hash");
-          // TODO: validate signature 
-          var encodedTx = Buffer.from(txFn.toString()).toString('hex'); // TODO: encode entire tx object
-          fs.appendFile(ledgerHistoryFile, encodedTx+'\n'); // Gotta love javascript
-          // TODO: ensure that the transaction only modifies things/values (JWTs) that the public key has "access" to. dont pass ledgerState that allows any operation.
-          txFn(ledgerState).then(function(result) {
-            count++;
-            // TODO: calculate and save new hash
-            console.log("@"+count+": " + encodedTx)
-            resolve(result);
-          })
-          .catch(function(err) {
-            console.error(err.stack);
-            // TODO: Rollback changes to ledgerState here
-            reject(err)
+      // commitTransaction takes an array of serialized transactions. they can be parsed by parseToken.
+      var commitTransactions = function(serializedTransactions) {
+        var promises = serializedTransactions.map(function(serializedTransaction) {
+          return new Promise(function(resolve, reject) {
+            payload = parseToken(serializedTransaction);
+            tx = {
+              fn: safeEval(payload.fn),  // fn is a function
+              parentBlockHash: payload.hsh,
+              publicKey: payload.iss,
+              args: payload.args
+            }
+            // TODO: validate tx.publickey against signature of serializedTransaction
+            if (currentBlockHash != tx.parentBlockHash) reject("Wrong parent block hash");
+            fs.appendFile(ledgerHistoryFile, serializedTransaction+'\n'); // Gotta love javascript
+            // TODO: ensure that the transaction only modifies things/values (JWTs) that the public key has "access" to. dont pass ledgerState that allows any operation.
+            tx.fn(ledgerState, tx.args).then(function(result) {
+              count++;
+              // console.log("@"+count+": " + encodedTx)
+              resolve(result);
+            })
+            .catch(function(err) {
+              console.error(err.stack);
+              // TODO: Rollback changes to ledgerState here
+              reject(err)
+            })
           })
         })
+        
+        // Apply all promised transactions
+        Promise.all(promises)
+        .then(function() {
+          // TODO: calculate hash of the new block
+        })
+        .catch(function(err) {
+          console.error(err.stack);
+        })
+      }
+      receiveTransaction = function(serializedTransaction) {
+        // TODO: queue up multiple transactions, wait for consensus, and THEN commit them in one block
+        return commitTransactions([serializedTransaction])
+      }
+      sendTransaction = function(serializedTransaction) {
+        // TODO: Network Stuff
+        
+        receiveTransaction(serializedTransaction)
       }
       var ledger = {
         index: count,
         hash: currentBlockHash,
         storeValue: function(identifier, value) {
-          var txFn = function(ledgerState) {
-            return new Promise(function(resolve, reject) {
-              ledgerState.update({identifier: identifier}, {$push: {values: value}}, {upsert: true}, function() {
-                ledgerState.findOne({identifier: identifier}, function(err, result) {
-                  if (err) reject(err);
-                  else resolve(result);
-                })
-              })
-            })
-          }
+          var txFn = require('./simple_contracts.js').storeValue;
           var tx = {
             fn: txFn,
+            args: {identifier: identifier, value: value},
             parentBlockHash: currentBlockHash
           }
-          return commitTransaction(addSignature(tx));
+          return sendTransaction(signAndSerialize(tx, './test_identity_private_key.pem'));
         }
       }
       resolve(ledger);
@@ -82,10 +101,18 @@ function init() {
   })
 }
 
-// TODO: implement this
-function addSignature(tx, privateKey, passPhrase) {
-  tx.signature = '';
-  return tx;
+function signAndSerialize(tx, privateKeyFile, passPhrase) {
+  var payload = {
+    fn: tx.fn.toString(),
+    hsh: tx.parentBlockHash,
+    args: tx.args,
+    iss: '' // TODO: set to public key (extract from privateKey)
+  }
+  return createToken(payload, privateKeyFile, passPhrase);
 }
 
-module.exports = {init: init}
+module.exports = {
+  init: init,
+  sendTransaction: sendTransaction,
+  receiveTransaction: receiveTransaction
+}

@@ -7,8 +7,8 @@ readline = require('readline');
 crypto = require('crypto');
 co = require('co');
 inquirer = require('inquirer');
-createToken = require('./create_token')
-Ledger = require('./ledger')
+createToken = require('./jwt').createToken;
+Ledger = require('./ledger');
 
 var prompt = inquirer.createPromptModule();
 prompt([
@@ -26,7 +26,7 @@ prompt([
       iat: iat,
       iss: 'stefan.co.jp'
   };
-  token = createToken(claims, answers.passphrase);
+  token = createToken(claims, './signkey.pem', answers.passphrase);
   unsignedToken = token.split('.')[0] + '.' + token.split('.')[1];
   
   fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+unsignedToken+"\n", function(err) {

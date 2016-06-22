@@ -37,7 +37,7 @@ There are several ways to become a shareholder. Visit http://stefan.co.jp for mo
 
 ## QuantumLedger
 
-The QuantumLedger is an experimental blockchain written completely in javascript. Contracts in QuantumLedger are just javascript promises that live inside a virtual machine. Smart Contracts have access to transaction arguments and the parts of the ledger state that are controlled by the contract's owner. An owner is defined by a public key.
+The QuantumLedger is an experimental blockchain written completely in javascript. Contracts in QuantumLedger are just javascript promises that live inside a virtual machine. The contracts have access to transaction arguments and the parts of the ledger that are controlled by or have explicitly been granted access to the contract's owner. An owner is defined by a public key.
 
 #### Key Generation
 
@@ -60,6 +60,15 @@ A QuantumLedger contract is just a javascript promise body. Read more about java
     function myContract(resolve, reject) { ... }
     
 Inside the contract you have access to the `ledgerState` variable and transaction arguments. They live in the global namespace of the VM that is executing the contract code.
+
+A contract execution can end in four ways:
+
+  - resolve() is called
+  - reject() is called
+  - the contract terminates without calling either resolve() nor reject()
+  - contract fulfillment takes too long and the consensus decides to destroy it
+
+The difference in behavior for each of these cases is not defined yet. Note that a contract should not attempt to modify the ledger after it called resolve() or reject().
 
 Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
 

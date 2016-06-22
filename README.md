@@ -2,7 +2,7 @@
 
 The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) as values that can be stored in a blockchain. It also contains code for an experimental new blockchain technology called QuantumLedger.
 
-## What is Stefan Corporation
+#### What is this about?
 
 Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) regulated by a government body utilizing blockchain technology. 
 

@@ -53,19 +53,21 @@ If you want to protect your private key with a passphrase, use:
     
 NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the ledger.
 
-#### Smart Contracts
+#### Contracts
 
-A smart contract is just javascript promise body. Read more about javascript promises [here]().
+A QuantumLedger contract is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
     function myContract(resolve, reject) { ... }
     
 Inside the contract you have access to the `ledgerState` variable and transaction arguments. They live in the global namespace of the VM that is executing the contract code.
 
-#### Transaction
+Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
+
+#### Transactions
 
 A transaction changes the ledger in some way.
 
-A transaction can be sent to a node like this.
+A transaction can be executed like this (networking not implemented yet).
   
     var tx = {
       contract: myContract,
@@ -74,5 +76,6 @@ A transaction can be sent to a node like this.
     }
     var serializedTransaction = Ledger.serializeAndSign(tx, './path_to_private_key.pem', 'passphrase');
     
-    // At this point, the transaction is just a signed string. Sending it to a node is not implemented yet. It might be something like this
-    // node.sendTransaction(serializedTransaction)
+    // At this point, the transaction is just a signed string. Sending it to a node on the network is not implemented yet.
+    // This will execute the transaction only on the local database.
+    Ledger.sendTransaction(serializedTransaction)

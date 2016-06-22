@@ -1,6 +1,6 @@
-// This file contains some sample contracts that can be deployed to the blockchain.
-// a QuantumLedger Contract is a function that takes the ledgerState and an object containing additional arguments
-// It returns a promise that "promises" to modify the ledgerState in a regulated and truthful way
+// This file contains some simple general-purpose contracts that can be deployed to the blockchain.
+// a QuantumLedger Contract is simply a promise body that "promises" to modify
+// the ledgerState in a regulated and truthful way.
 // The contract MUST NOT use random values
 
 module.exports = {

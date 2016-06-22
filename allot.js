@@ -37,14 +37,18 @@ prompt([
   // Store token in blockchain as proof-of-stake
   // TODO: replace with something that is actually working (live blockchain)
   if (useExperimentalBlockchain) {
-    
-    Ledger.init(/* {privateKey: privateKey }*/)
-    .then(function(ledger) {
-      return ledger.storeValue(answers.identifier, token)
+    Ledger.init()
+    .then(function(ledgerStatus) {
+      var tx = {
+        contract: require('./simple_contracts.js').storeValue,
+        args: {identifier: answers.identifier, value: token},
+        parentBlockHash: ledgerStatus.currentBlockHash
+      }
+      return Ledger.sendTransaction(Ledger.serializeAndSign(tx, './test_identity_private_key.pem'));
     })
     .then(function(result) {
-      // Value has been stored in the blockchain ledger
-      // console.log(result)
+      // TODO: Transaction has been sent (probably. Return meaningful result).
+      // TODO: But we don't know if was included in the block or if it was succesful. Find out!
     })
     .catch(function(err) {
       console.error(err.stack);

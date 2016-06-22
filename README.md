@@ -69,7 +69,7 @@ A transaction changes the ledger in some way.
 
 A transaction can be executed like this (networking not implemented yet).
     
-    require('./ledger');
+    Ledger = require('./ledger');
     
     Ledger.init()
     .then(function(ledgerStatus) {

@@ -68,14 +68,26 @@ Note: At this point in time, the API to interact with the ledger state from with
 A transaction changes the ledger in some way.
 
 A transaction can be executed like this (networking not implemented yet).
-  
-    var tx = {
-      contract: myContract,
-      parentBlockHash: currentBlockHash,
-      args: { /* args to pass to the contract*/}
-    }
-    var serializedTransaction = Ledger.serializeAndSign(tx, './path_to_private_key.pem', 'passphrase');
     
-    // At this point, the transaction is just a signed string. Sending it to a node on the network is not implemented yet.
-    // This will execute the transaction only on the local database.
-    Ledger.sendTransaction(serializedTransaction)
+    require('./ledger');
+    
+    Ledger.init()
+    .then(function(ledgerStatus) {
+      
+      var tx = {
+        contract: myContract,
+        parentBlockHash: currentBlockHash,
+        args: { /* args to pass to the contract*/}
+      }
+      
+      var serializedTransaction = Ledger.serializeAndSign(tx, './path_to_private_key.pem', 'passphrase');
+      
+      // At this point, the transaction is just a signed string. Sending it to a node on the network is not implemented yet.
+      // This will execute the transaction only on the local database.
+      return Ledger.sendTransaction(serializedTransaction);
+      
+    })
+    .then(function(result) {
+      // TODO: Check if transaction has been executed in the next block.  
+    })
+    

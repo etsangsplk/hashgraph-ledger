@@ -42,6 +42,8 @@ If you want to protect your private key with a passphrase, use:
 
     openssl genrsa -passout pass:mypassphrase -out private_key.pem 2048
     openssl rsa -in private_key.pem -passin pass:mypassphrase -pubout -out public_key.pem
+    
+NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the ledger.
 
 ## Become a shareholder
 

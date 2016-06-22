@@ -72,4 +72,7 @@ A transaction can be sent to a node like this.
       parentBlockHash: currentBlockHash,
       args: { /* args to pass to the contract*/}
     }
-    node.sendTransaction(Ledger.serializeAndSign(tx), './path_to_private_key.pem', 'passphrase')
+    var serializedTransaction = Ledger(Ledger.serializeAndSign(tx), './path_to_private_key.pem', 'passphrase');
+    
+    // At this point, the transaction is just a signed string. Sending it to a node is not implemented yet. It might be something like this
+    // node.sendTransaction(serializedTransaction)

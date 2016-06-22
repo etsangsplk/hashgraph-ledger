@@ -31,9 +31,17 @@ Stefan Corporation is registering the JWT claim name `shares` to store the amoun
 
 The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` claim is claiming to be owning. This value shall only be applicable if the `iss` claim value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
 
-## Key Generation
+#### Become a shareholder
 
-To create an public/private keypair to use on QuantumLedger:
+There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
+
+## QuantumLedger
+
+The QuantumLedger is an experimental blockchain written completely in javascript. Contracts in QuantumLedger are just javascript promises that live inside a virtual machine. Smart Contracts have access to transaction arguments and the parts of the ledger state that are controlled by the contract's owner. An owner is defined by a public key.
+
+#### Key Generation
+
+Run the following commands to create a public/private keypair that you can use with QuantumLedger:
 
     openssl genrsa -out private_key.pem 2048
     openssl rsa -in private_key.pem -pubout -out public_key.pem
@@ -45,6 +53,23 @@ If you want to protect your private key with a passphrase, use:
     
 NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the ledger.
 
-## Become a shareholder
+#### Smart Contracts
 
-There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
+A smart contract is just javascript promise body. Read more about javascript promises [here]().
+
+    function myContract(resolve, reject) { ... }
+    
+Inside the contract you have access to the `ledgerState` variable and transaction arguments. They live in the global namespace of the VM that is executing the contract code.
+
+#### Transaction
+
+A transaction changes the ledger in some way.
+
+A transaction can be sent to a node like this.
+  
+    var tx = {
+      contract: myContract,
+      parentBlockHash: currentBlockHash,
+      args: { /* args to pass to the contract*/}
+    }
+    node.sendTransaction(Ledger.serializeAndSign(tx), './path_to_private_key.pem', 'passphrase')

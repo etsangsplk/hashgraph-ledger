@@ -46,6 +46,9 @@ prompt([
       // Value has been stored in the blockchain ledger
       // console.log(result)
     })
+    .catch(function(err) {
+      console.error(err.stack);
+    })
   }
   
 })

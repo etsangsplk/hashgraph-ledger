@@ -4,14 +4,12 @@
 // The contract MUST NOT use random values
 
 module.exports = {
-  // This contract takes two args: identifier and value
-  storeValue: function(ledgerState, args) {
-    return new Promise(function(resolve, reject) {
-      ledgerState.update({identifier: args.identifier}, {$push: {values: args.value}}, {upsert: true}, function() {
-        ledgerState.findOne({identifier: args.identifier}, function(err, result) {
-          if (err) reject(err);
-          else resolve(result);
-        })
+  // This contract expects two transaction arguments: identifier and value
+  storeValue: function(resolve, reject) {
+    ledgerState.update({identifier: identifier}, {$push: {values: value}}, {upsert: true}, function() {
+      ledgerState.findOne({identifier: identifier}, function(err, result) {
+        if (err) reject(err);
+        else resolve(result);
       })
     })
   }

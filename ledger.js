@@ -43,24 +43,25 @@ function init() {
           return new Promise(function(resolve, reject) {
             payload = parseToken(serializedTransaction);
             tx = {
-              fn: safeEval(payload.fn),  // fn is a function
+              contract: payload.contract,  // contract is promise string, eg: "function(resolve, reject) { ... }"
               parentBlockHash: payload.hsh,
               publicKey: payload.iss,
               args: payload.args
             }
             // TODO: validate tx.publickey against signature of serializedTransaction
             if (currentBlockHash != tx.parentBlockHash) reject("Wrong parent block hash");
-            fs.appendFile(ledgerHistoryFile, serializedTransaction+'\n'); // Gotta love javascript
-            // TODO: ensure that the transaction only modifies things/values (JWTs) that the public key has "access" to. dont pass ledgerState that allows any operation.
-            tx.fn(ledgerState, tx.args).then(function(result) {
+
+            // TODO: ensure that the contract only modifies things/values (JWTs) that the public key has "access" to. dont pass ledgerState that allows any operation.
+            promiseInVm(tx.contract, Object.assign({ledgerState: ledgerState}, tx.args)).then(function(result) {
               count++;
+              fs.appendFile(ledgerHistoryFile, serializedTransaction+'\n');
               // console.log("@"+count+": " + encodedTx)
               resolve(result);
             })
             .catch(function(err) {
               console.error(err.stack);
               // TODO: Rollback changes to ledgerState here
-              reject(err)
+              reject(err);
             })
           })
         })
@@ -89,11 +90,11 @@ function init() {
         storeValue: function(identifier, value) {
           var txFn = require('./simple_contracts.js').storeValue;
           var tx = {
-            fn: txFn,
+            contract: txFn,
             args: {identifier: identifier, value: value},
             parentBlockHash: currentBlockHash
           }
-          return sendTransaction(signAndSerialize(tx, './test_identity_private_key.pem'));
+          return sendTransaction(serializeAndSign(tx, './test_identity_private_key.pem'));
         }
       }
       resolve(ledger);
@@ -101,18 +102,24 @@ function init() {
   })
 }
 
-function signAndSerialize(tx, privateKeyFile, passPhrase) {
+function serializeAndSign(tx, privateKeyFile, passPhrase) {
   var payload = {
-    fn: tx.fn.toString(),
-    hsh: tx.parentBlockHash,
+    contract: tx.contract.toString(),
+    hash: tx.parentBlockHash,
     args: tx.args,
     iss: '' // TODO: set to public key (extract from privateKey)
   }
   return createToken(payload, privateKeyFile, passPhrase);
 }
 
+function promiseInVm(promiseFn, globals) {
+  var code = 'new Promise(' + promiseFn + ')';
+  return safeEval(code, globals);
+}
+
 module.exports = {
   init: init,
   sendTransaction: sendTransaction,
-  receiveTransaction: receiveTransaction
+  receiveTransaction: receiveTransaction,
+  serializeAndSign: serializeAndSign
 }

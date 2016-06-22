@@ -76,7 +76,7 @@ A transaction can be executed like this (networking not implemented yet).
       
       var tx = {
         contract: myContract,
-        parentBlockHash: currentBlockHash,
+        parentBlockHash: ledgerStatus.currentBlockHash,
         args: { /* args to pass to the contract*/}
       }
       

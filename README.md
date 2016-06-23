@@ -4,7 +4,7 @@ The code in this repository contains the source to the [Stefan Corporation Websi
 
 #### What is this about?
 
-Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed company shares (kabushiki) regulated by a government body utilizing blockchain technology. 
+Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed, regulated company shares (kabushiki) utilizing blockchain technology. 
 
 Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain.
 

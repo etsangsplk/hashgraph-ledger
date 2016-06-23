@@ -25,11 +25,21 @@ Currently, shareholders can validate a Stefan Corporation share on the [JWT webs
     -----END PUBLIC KEY-----
     
 
-#### JWT `shares` claim name specification
+#### JWT claim name specification
 
-Stefan Corporation is registering the JWT claim name `shares` to store the amount of shares held by the subscriber with the IETF.
+Stefan Corporation is using the JWT claim name `shares` to store the amount of shares held by the subscriber.
 
-The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` claim is claiming to be owning. This value shall only be applicable if the `iss` claim value can be resolved to a host using standard DNS lookup methods and the host provides sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
+The claim payload shall be a JSON object similar to
+
+    {
+        shares: 1,
+        sub: 'stefan.co.jp',
+        iss: public key,
+        jti: a unique identifier,
+        iat: a unix timestamp specifying the date of issuance
+    }
+
+The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` and `sub` claim is claiming to be owning. The value of the `sub` claim should be resolvable to a host using standard DNS lookup methods and the host should provide sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
 
 #### Become a shareholder
 

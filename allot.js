@@ -35,16 +35,18 @@ prompt([
   console.log(token);
   
   // Store token in blockchain as proof-of-stake
-  // TODO: replace with something that is actually working (live blockchain)
+  // TODO: use a "real" blockchain.
   if (useExperimentalBlockchain) {
+    var privateKey = fs.readFileSync('./signkey.pem');
+    var publicKey  = fs.readFileSync('./verifykey.pem');
     Ledger.init()
     .then(function(ledgerStatus) {
       var tx = {
         contract: require('./simple_contracts.js').storeValue,
         args: {identifier: answers.identifier, value: token},
-        parentBlockHash: ledgerStatus.currentBlockHash
+        publicKey: publicKey
       }
-      return Ledger.sendTransaction(Ledger.serializeAndSign(tx, './test_identity_private_key.pem'));
+      return Ledger.sendTransaction(Ledger.serializeAndSign(tx, privateKey, answers.passphrase));
     })
     .then(function(result) {
       // TODO: Transaction has been sent (probably. Return meaningful result).

@@ -46,18 +46,21 @@ function init() {
 }
 
 
-function serializeAndSign(tx, privateKeyFile, passPhrase) {
+function serializeAndSign(tx, privateKey, passPhrase) {
+  if (!tx.parentBlockHash) tx.parentBlockHash = currentBlockHash;
+  if (!tx.publicKey) tx.publicKey = ''; // TODO: extract from privateKey
   var payload = {
     contract: tx.contract.toString(),
-    hash: tx.parentBlockHash,
+    hash: tx.parentBlockHash.toString(),
     args: tx.args,
-    iss: '' // TODO: set to public key (extract from privateKey)
+    iss: tx.publicKey.toString()
   }
-  return createToken(payload, privateKeyFile, passPhrase);
+  return createToken(payload, privateKey, passPhrase);
 }
 
 
-function promiseInVm(promiseFn, globals) {
+function runContractInVm(promiseFn, globals) {
+  // TODO: Remove all possible code injection exploits, evil CPU locking code, etc. Into the rabbit hole and beyond.
   var code = 'new Promise(' + promiseFn + ')';
   return safeEval(code, globals);
 }
@@ -70,23 +73,26 @@ function commitTransactions(serializedTransactions) {
       payload = parseToken(serializedTransaction);
       tx = {
         contract: payload.contract,  // contract is promise string, eg: "function(resolve, reject) { ... }"
-        parentBlockHash: payload.hsh,
+        parentBlockHash: payload.hash,
         publicKey: payload.iss,
         args: payload.args
       }
-      // TODO: validate tx.publickey against signature of serializedTransaction
-      if (currentBlockHash != tx.parentBlockHash) reject("Wrong parent block hash");
+      
+      if (currentBlockHash == tx.parentBlockHash) return reject("Wrong parent block hash");
 
-      // TODO: ensure that the contract only modifies things/values (JWTs) that the public key has "access" to. dont pass ledgerState that allows any operation.
-      promiseInVm(tx.contract, Object.assign({ledgerState: ledgerState}, tx.args)).then(function(result) {
+      // TODO: pass a ledgerState object that has access control / permissions based on the public key instead a full-access database API
+      // TODO: Start ACID transaction (proposal: pg-promise library)
+      runContractInVm(tx.contract, Object.assign({ledgerState: ledgerState}, tx.args))
+      .then(function(result) {
         count++;
         fs.appendFile(ledgerHistoryFile, serializedTransaction+'\n');
+        // TODO: Commit ACID transaction
         // console.log("@"+count+": " + encodedTx)
         resolve(result);
       })
       .catch(function(err) {
         console.error(err.stack);
-        // TODO: Rollback changes to ledgerState here
+        // TODO: Rollback ACID transaction
         reject(err);
       })
     })
@@ -101,7 +107,6 @@ function commitTransactions(serializedTransactions) {
     console.error(err.stack);
   })
 }
-
 
 function receiveTransaction(serializedTransaction) {
   // TODO: queue up multiple transactions, wait for consensus, and THEN commit them in one block

@@ -68,7 +68,7 @@ A contract execution can end in four ways:
   - the contract terminates without calling either resolve() nor reject()
   - contract fulfillment takes too long and the consensus decides to destroy it
 
-The difference in behavior for each of these cases is not defined yet. Note that a contract should not attempt to modify the ledger after it called resolve() or reject().
+A contract should not attempt to modify the ledger after it called resolve() or reject(). For changes to the ledger state to be permanent, a contract has to call resolve(result) with a `result` variable that is not `undefined`. Note that the storage engine currently does not support ACID transaction, meaning changes to the the ledger are currently not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
 
 Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
 

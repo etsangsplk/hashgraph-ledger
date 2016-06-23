@@ -78,6 +78,9 @@ A transaction changes the ledger in some way.
 
 A transaction can be executed like this (networking not implemented yet).
     
+    var myPublicKey = fs.readFileSync('./public_key.pem').toString()
+    var myPrivateKey = fs.readFileSync('./private_key.pem').toString()
+    
     Ledger = require('./ledger');
     
     Ledger.init()
@@ -85,14 +88,14 @@ A transaction can be executed like this (networking not implemented yet).
       
       var tx = {
         contract: myContract,
-        parentBlockHash: ledgerStatus.currentBlockHash,
-        args: { /* args to pass to the contract*/}
+        args: { /* args to pass to the contract*/ },
+        publicKey: myPublicKey
       }
       
-      var serializedTransaction = Ledger.serializeAndSign(tx, './path_to_private_key.pem', 'passphrase');
+      // Turn the transaction into a string, ready to be sent over the network.
+      var serializedTransaction = Ledger.serializeAndSign(tx, myPrivateKey, 'passphrase');
       
-      // At this point, the transaction is just a signed string. Sending it to a node on the network is not implemented yet.
-      // This will execute the transaction only on the local database.
+      // This will execute the transaction on the local database only since networking is not implemented yet.
       return Ledger.sendTransaction(serializedTransaction);
       
     })

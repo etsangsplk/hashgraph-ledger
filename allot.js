@@ -1,5 +1,8 @@
 var useExperimentalBlockchain = true;
 
+var privateKey = fs.readFileSync('./private_key.pem').toString();
+var publicKey  = fs.readFileSync('./public_key.pem').toString();
+
 var co, createToken, crypto, fs, hiddenInput, readline, rl;
 
 fs = require('fs');
@@ -24,9 +27,10 @@ prompt([
       shares: answers.amount,
       jti: jti,
       iat: iat,
-      iss: 'stefan.co.jp'
+      sub: 'stefan.co.jp',
+      iss: publicKey
   };
-  token = createToken(claims, './signkey.pem', answers.passphrase);
+  token = createToken(claims, privateKey, answers.passphrase);
   unsignedToken = token.split('.')[0] + '.' + token.split('.')[1];
   
   fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+unsignedToken+"\n", function(err) {
@@ -37,8 +41,6 @@ prompt([
   // Store token in blockchain as proof-of-stake
   // TODO: use a "real" blockchain.
   if (useExperimentalBlockchain) {
-    var privateKey = fs.readFileSync('./signkey.pem');
-    var publicKey  = fs.readFileSync('./verifykey.pem');
     Ledger.init()
     .then(function(ledgerStatus) {
       var tx = {

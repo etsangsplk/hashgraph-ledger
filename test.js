@@ -26,4 +26,4 @@ Ledger.init()
 })
 
 
-var identity = Ledger.identity(testPrivateKey, testPublicKey)
+// var identity = Ledger.identity(testPrivateKey, testPublicKey)

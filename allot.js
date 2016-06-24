@@ -1,17 +1,15 @@
 var useExperimentalBlockchain = true;
 
+var fs = require('fs');
+var readline = require('readline');
+var crypto = require('crypto');
+var co = require('co');
+var inquirer = require('inquirer');
+var createToken = require('./jwt').createToken;
+var Ledger = require('./ledger');
+
 var privateKey = fs.readFileSync('./private_key.pem').toString();
 var publicKey  = fs.readFileSync('./public_key.pem').toString();
-
-var co, createToken, crypto, fs, hiddenInput, readline, rl;
-
-fs = require('fs');
-readline = require('readline');
-crypto = require('crypto');
-co = require('co');
-inquirer = require('inquirer');
-createToken = require('./jwt').createToken;
-Ledger = require('./ledger');
 
 var prompt = inquirer.createPromptModule();
 prompt([

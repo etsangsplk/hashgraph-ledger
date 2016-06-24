@@ -55,6 +55,7 @@ function serializeAndSign(tx, privateKey, passPhrase) {
     args: tx.args,
     iss: tx.publicKey.toString()
   }
+
   return createToken(payload, privateKey, passPhrase);
 }
 
@@ -65,6 +66,22 @@ function runContractInVm(promiseFn, globals) {
   return safeEval(code, globals);
 }
 
+// XXX: This is not final at all. TODO: Switch to postgres using pg-promise
+function getLedgerInterface(database, publicKey) {
+  var update = function(select, updates, callback) {
+    return new Promise(function(resolve, reject) {
+      delete updates.publicKey;
+      select.publicKey = publicKey;
+      database.update(select, updates, {upsert: true}, function(err, numUpdated) {
+        if (err) reject(err);
+        else resolve(numUpdated);
+      });
+    })
+  }
+  return {
+    update: update
+  }
+}
 
 // commitTransaction takes an array of serialized transactions. they can be parsed by parseToken.
 function commitTransactions(serializedTransactions) {
@@ -78,11 +95,16 @@ function commitTransactions(serializedTransactions) {
         args: payload.args
       }
       
-      if (currentBlockHash == tx.parentBlockHash) return reject("Wrong parent block hash");
-
-      // TODO: pass a ledgerState object that has access control / permissions based on the public key instead a full-access database API
+      if (currentBlockHash != tx.parentBlockHash) return reject("Wrong parent block hash");
+      
+      // Save contract in blockchain
+      // TODO: support named contracts (multiple contracts per issuer/address)
+      ledgerState.update({publicKey: tx.publicKey}, {contract: tx.contract}, {upsert: true})
+      
+      var ledgerInterface = getLedgerInterface(ledgerState, tx.publicKey);
+      
       // TODO: Start ACID transaction (proposal: pg-promise library)
-      runContractInVm(tx.contract, Object.assign({ledgerState: ledgerState}, tx.args))
+      runContractInVm(tx.contract, Object.assign(tx.args, {ledger: ledgerInterface}))
       .then(function(result) {
         count++;
         fs.appendFile(ledgerHistoryFile, serializedTransaction+'\n');

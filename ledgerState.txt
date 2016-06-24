@@ -1,1 +1,0 @@
-{"$$indexCreated":{"fieldName":"identifier","unique":true,"sparse":false}}

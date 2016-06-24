@@ -6,9 +6,12 @@
 module.exports = {
   // This contract expects two transaction arguments: identifier and value
   storeValue: function(resolve, reject) {
-    ledgerState.update({identifier: identifier}, {$push: {values: value}}, {upsert: true}, function(err, numUpdated) {
-      if (err) reject(err);
-      else resolve(numUpdated);
+    ledger.update({identifier: identifier}, {$push: {values: value}})
+    .then(function(numUpdated) {
+      resolve(numUpdated);
+    })
+    .catch(function(err) {
+      reject(err);
     })
   }
 }

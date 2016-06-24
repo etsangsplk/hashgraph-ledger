@@ -15,7 +15,7 @@ var prompt = inquirer.createPromptModule();
 prompt([
   {type: 'password', message: 'Enter passphrase', name: 'passphrase'},
   {type: 'input', message: 'Enter amount of shares', name: 'amount'},
-  {type: 'input', message: 'Enter identification', name: 'identifier'},
+  {type: 'input', message: 'Enter identifier (receiver of shares)', name: 'identifier'},
 ])
 .then(function(answers) {
   var claims, token;
@@ -62,4 +62,3 @@ prompt([
   console.error(err.stack); 
   process.exit(1);
 })
-

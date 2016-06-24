@@ -4,14 +4,13 @@
 // The contract MUST NOT use random values
 
 module.exports = {
-  // This contract expects two transaction arguments: identifier and value
+  // Upon deployment, this contract simply stores a value under a specified identifier.
+  // It does not interact with other contracts.
+  // Expected arguments: identifier, value
   storeValue: function(resolve, reject) {
+    if (caller) throw 'This contract only runs on deployment';
     ledger.update({identifier: identifier}, {$push: {values: value}})
-    .then(function(numUpdated) {
-      resolve(numUpdated);
-    })
-    .catch(function(err) {
-      reject(err);
-    })
+    .then(resolve)
+    .catch(reject)
   }
 }

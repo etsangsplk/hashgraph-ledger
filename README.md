@@ -67,9 +67,15 @@ NOTE: If your private key file gets compromised or you lose the passphrase, it w
 
 A QuantumLedger contract is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-    function myContract(resolve, reject) { ... }
+    var myContract = function(resolve, reject) {
+      ledger.doSomething().then(resolve);
+    }
     
-Inside the contract you have access to the `ledgerState` variable and transaction arguments. They live in the global namespace of the VM that is executing the contract code.
+The following variables are accessible through the global scope of the contract VM:
+
+  - `ledger`: The interface to interact with the ledger state. Note that this interface is not finalized and therefore not yet documented.
+  - `caller`: The public key of the calling contract. undefined during deployment context.
+  - arguments passed to the contract
 
 A contract execution can end in four ways:
 
@@ -78,7 +84,7 @@ A contract execution can end in four ways:
   - the contract terminates without calling either resolve() nor reject()
   - contract fulfillment takes too long and the consensus decides to destroy it
 
-A contract should not attempt to modify the ledger after it called resolve() or reject(). For changes to the ledger state to be permanent, a contract has to call resolve(result) with a `result` variable that is not `undefined`. Note that the storage engine currently does not support ACID transaction, meaning changes to the the ledger are currently not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
+A contract should not attempt to modify the ledger after it called resolve() or reject(). If a contract should be considered fulfilled, it has to call resolve(result) . `result` may not be undefined. Note that the storage engine currently does not support ACID transactions, meaning changes to the the ledger are not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
 
 Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
 

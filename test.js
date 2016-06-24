@@ -22,7 +22,7 @@ Ledger.init()
   // TODO: But we don't know if was included in the block or if it was succesful. Find out!
 })
 .catch(function(err) {
-  console.error(err.stack);
+  console.error(err);
 })
 
 

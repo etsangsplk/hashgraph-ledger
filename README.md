@@ -96,7 +96,7 @@ Note: At this point in time, the API to interact with the ledger state from with
 
 A transaction changes the ledger in some way.
 
-A transaction can be executed like this (networking not implemented yet).
+A transaction can be executed like this.
     
     var myPublicKey = fs.readFileSync('./public_key.pem').toString()
     var myPrivateKey = fs.readFileSync('./private_key.pem').toString()

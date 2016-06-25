@@ -6,7 +6,6 @@ var crypto = require('crypto');
 var co = require('co');
 var inquirer = require('inquirer');
 var createToken = require('./jwt').createToken;
-var Ledger = require('./ledger');
 
 var privateKey = fs.readFileSync('./private_key.pem').toString();
 var publicKey  = fs.readFileSync('./public_key.pem').toString();
@@ -37,16 +36,21 @@ prompt([
   console.log(token);
   
   // Store token in blockchain as proof-of-stake
-  // TODO: use a "real" blockchain.
   if (useExperimentalBlockchain) {
-    Ledger.init()
-    .then(function(ledgerStatus) {
-      var tx = {
-        contract: require('./simple_contracts.js').storeValue,
-        args: {identifier: answers.identifier, value: token},
-        publicKey: publicKey
-      }
-      return Ledger.sendTransaction(Ledger.serializeAndSign(tx, privateKey, answers.passphrase));
+    var Ledger = require('./ledger');
+    var Node = require('./node');
+    
+    var tx = {
+      contract: require('./simple_contracts.js').storeValue,
+      args: {identifier: answers.identifier, value: token},
+      publicKey: publicKey
+    }
+    
+    var serializedTransaction = Ledger.serializeAndSign(tx, privateKey, answers.passphrase);
+    
+    Node.setup()
+    .then(function() {
+      return Node.sendTransaction(serializedTransaction);
     })
     .then(function(result) {
       // TODO: Transaction has been sent (probably. Return meaningful result).

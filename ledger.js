@@ -162,17 +162,8 @@ function receiveTransaction(serializedTransaction) {
 }
 
 
-function sendTransaction(serializedTransaction) {
-  return new Promise(function(resolve) {
-    // TODO: Network Stuff
-    receiveTransaction(serializedTransaction);
-    resolve();
-  })
-}
-
 module.exports = {
   init: init,
-  sendTransaction: sendTransaction,
   receiveTransaction: receiveTransaction,
   serializeAndSign: serializeAndSign
 }

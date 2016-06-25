@@ -45,6 +45,10 @@ The claim name `shares` shall be used to specify the amount of shares a stake ho
 
 There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
 
+#### Allot shares
+
+After you have registered your public key with your government, you can simply run `node allot.js` to issue shares. The easiest way to do this is to amend the articles of incorporation to include the public key.
+
 ## QuantumLedger
 
 The QuantumLedger is an experimental blockchain written completely in javascript. Contracts in QuantumLedger are just javascript promises that live inside a virtual machine and may or may not resolve at any time. The contracts have access to transaction arguments and the parts of the ledger that are controlled by or have explicitly been granted access to the contract's owner. An owner is defined by a public key.
@@ -98,9 +102,10 @@ A transaction can be executed like this (networking not implemented yet).
     var myPrivateKey = fs.readFileSync('./private_key.pem').toString()
     
     Ledger = require('./ledger');
+    Node = require('./node');
     
-    Ledger.init()
-    .then(function(ledgerStatus) {
+    Node.setup()
+    .then(function() {
       
       var tx = {
         contract: myContract,
@@ -111,11 +116,28 @@ A transaction can be executed like this (networking not implemented yet).
       // Turn the transaction into a string, ready to be sent over the network.
       var serializedTransaction = Ledger.serializeAndSign(tx, myPrivateKey, 'passphrase');
       
-      // This will execute the transaction on the local database only since networking is not implemented yet.
-      return Ledger.sendTransaction(serializedTransaction);
+      // This will send the transaction to all known nodes, including the local node.
+      return Node.sendTransaction(serializedTransaction);
       
     })
     .then(function(result) {
       // TODO: Check if transaction has been executed in the next block.  
     })
+
+### Nodes
+
+The QuantumLedger Network is supposed to be a public network of nodes exchanging signed transactions and maintaining consensus over the state over the replicated ledger. However, a consensus mechanism is currently not implemented. The QuantumLedger Network only supports IPv6.
+
+To run a local node, simply run
+
+    Node.setup({port: 41234})
+
+To send a transaction into the network run
+
+    Node.sendTransaction(tx)
     
+Note that the network currently sends the transaction as a simple UDP datagram to all known nodes. There is no guarantee that the transaction actually reaches other nodes.
+
+To add another node to the known network, run
+
+    Node.addOtherNode(ip6address:port)

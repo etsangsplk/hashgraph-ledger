@@ -1,5 +1,6 @@
 // TODO: use real testing framework
 Ledger = require('./ledger');
+Node = require('./node')
 fs = require('fs');
 
 exploitingContract = 'function(resolve, reject){ derp() }); function derp(){ asdf() };function(){ }'
@@ -7,15 +8,17 @@ exploitingContract = 'function(resolve, reject){ derp() }); function derp(){ asd
 var testPublicKey = fs.readFileSync('./test_identity_public_key.pem').toString()
 var testPrivateKey = fs.readFileSync('./test_identity_private_key.pem').toString()
 
-Ledger.init()
-.then(function(ledgerStatus) {
-  var tx = {
-    contract: require('./simple_contracts.js').storeValue,
-    //contract: exploitingContract,
-    args: {identifier: 'some_id', value: 'some_value123'},
-    publicKey: testPublicKey
-  }
-  return Ledger.sendTransaction(Ledger.serializeAndSign(tx, testPrivateKey));
+
+var tx = {
+  contract: require('./simple_contracts.js').storeValue,
+  //contract: exploitingContract,
+  args: {identifier: 'some_id', value: 'some_value123'},
+  publicKey: testPublicKey
+}
+
+Node.setup()
+.then(function() {
+  return Node.sendTransaction(Ledger.serializeAndSign(tx, testPrivateKey))
 })
 .then(function(result) {
   // TODO: Transaction has been sent (probably. Return meaningful result).

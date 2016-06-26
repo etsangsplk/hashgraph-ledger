@@ -15,7 +15,6 @@ var setup = function(_options) {
   var port = options.port;
 
   // When this gets really big... What happens?
-  
   knownNodes[publicKey] = 'localhost:' + port
 
   socket.bind(port);
@@ -32,7 +31,6 @@ var setup = function(_options) {
       Ledger.init()
       .then(function() {
         socket.on('message', function (data, fn) {
-          console.log('received transaction');
           Ledger.receiveTransaction(data.toString());
         });
         resolve();

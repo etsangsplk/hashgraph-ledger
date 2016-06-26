@@ -126,18 +126,20 @@ A transaction can be executed like this.
 
 ### Nodes
 
-The QuantumLedger Network is supposed to be a public network of nodes exchanging signed transactions and maintaining consensus over the state over the replicated ledger. However, a consensus mechanism is currently not implemented. The QuantumLedger Network only supports IPv6.
+The QuantumLedger Network is supposed to be a public network of nodes exchanging signed transactions and maintaining consensus over the state over the replicated ledger. However, a consensus mechanism is currently not implemented and networking is only rudimentary and not based on any whitepaper. It's definitely not "production ready". The QuantumLedger Network only supports IPv6.
 
 To run a local node, simply run
 
     Node.setup({port: 41234})
 
+To add another node to the known network, run
+
+    Node.addOtherNode(publicKey, ip6address:port)
+
 To send a transaction into the network run
 
     Node.sendTransaction(tx)
     
-Note that the network currently sends the transaction as a simple UDP datagram to all known nodes. There is no guarantee that the transaction actually reaches other nodes.
+Note that the network currently sends the transaction as a simple UDP datagram to all known nodes. There is no guarantee that the transaction actually reaches other nodes. 
 
-To add another node to the known network, run
-
-    Node.addOtherNode(ip6address:port)
+When starting a node for the first time, it will not have any information about the state of the ledger and should up with the rest of the network before executing contracts. It has not been decided how to do this, yet.

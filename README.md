@@ -45,9 +45,9 @@ The claim name `shares` is used to specify the amount of shares a stake holder o
 
 There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
 
-#### Allot shares
+#### Can my company use this to issue shares?
 
-After you have registered your public key with your government, you can simply run `node allot.js` to issue shares. The easiest way to do this is to amend the articles of incorporation to include the public key.
+Yes. All you have to do is to register your public key with your government. The easiest way to do this is to amend the publicly auditable articles of incorporation to include the public key. You can then simply issue shares by running `node allot.js`. 
 
 ## QuantumLedger
 

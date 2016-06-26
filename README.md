@@ -51,7 +51,11 @@ After you have registered your public key with your government, you can simply r
 
 ## QuantumLedger
 
-The QuantumLedger is an experimental blockchain written completely in javascript. Contracts in QuantumLedger are just javascript promises that live inside a virtual machine and may or may not resolve at any time. The contracts have access to transaction arguments and the parts of the ledger that are controlled by or have explicitly been granted access to the contract's owner. An owner is defined by a public key.
+The QuantumLedger is an experimental minimalistic blockchain written completely in javascript. 
+
+It has no enrollment, no member service, no user registrations or "accounts, and no native currency or "fuel".
+
+Contracts are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
 
 ### Key Generation
 

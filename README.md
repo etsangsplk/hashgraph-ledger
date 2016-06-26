@@ -29,7 +29,7 @@ Currently, shareholders can validate a Stefan Corporation share on the [JWT webs
 
 Stefan Corporation is using the JWT claim name `shares` to store the amount of shares held by the subscriber.
 
-The claim payload shall be a JSON object similar to
+The claim payload is a JSON object similar to
 
     {
         shares: 1,
@@ -39,7 +39,7 @@ The claim payload shall be a JSON object similar to
         iat: a unix timestamp specifying the date of issuance
     }
 
-The claim name `shares` shall be used to specify the amount of shares a stake holder of a company referenced in the `iss` and `sub` claim is claiming to be owning. The value of the `sub` claim should be resolvable to a host using standard DNS lookup methods and the host should provide sufficient information to uniquely identify the legal entity (company) referenced in the `iss` claim.
+The claim name `shares` is used to specify the amount of shares a stake holder of an entity referenced in the `iss` claim is owning. The value of the `sub` claim should be resolvable to a host using standard DNS lookup methods and the host should provide sufficient information via HTTP to uniquely identify the legal entity (company) referenced in the `iss` claim and the host should make the public key retrievable via HTTP.
 
 #### Become a shareholder
 

@@ -1,6 +1,6 @@
 # Stefan.co.jp
 
-The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) as values that can be stored in a blockchain. It also contains code for an experimental new blockchain technology called QuantumLedger.
+The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) with cryptographic values that can be stored and tracked in a blockchain. It also contains code for an experimental new blockchain technology called QuantumLedger.
 
 #### What is this about?
 

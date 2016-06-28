@@ -156,14 +156,8 @@ function commitTransactions(serializedTransactions) {
   })
 }
 
-function receiveTransaction(serializedTransaction) {
-  // TODO: queue up multiple transactions, wait for consensus, and THEN commit them in one block
-  commitTransactions([serializedTransaction])
-}
-
-
 module.exports = {
   init: init,
-  receiveTransaction: receiveTransaction,
+  commitTransactions: commitTransactions,
   serializeAndSign: serializeAndSign
 }

@@ -31,7 +31,11 @@ var setup = function(_options) {
       Ledger.init()
       .then(function() {
         socket.on('message', function (data, fn) {
-          Ledger.receiveTransaction(data.toString());
+          // TODO: consensus algorithm, decide what transactions to execute in the current round and which ones to reject or execute later.
+          // TODO: analyze payload. check if it's malicious (the tx might lock up the VM etc)
+          var transactions = []
+          transactions.push(data.toString());
+          Ledger.commitTransactions(transactions);
         });
         resolve();
       })

@@ -31,8 +31,8 @@ var setup = function(_options) {
       Ledger.init()
       .then(function() {
         socket.on('message', function (data, fn) {
-          // TODO: consensus algorithm, decide what transactions to execute in the current round and which ones to reject or execute later.
           // TODO: analyze payload. check if it's malicious (the tx might lock up the VM etc)
+          // TODO: consensus algorithm, decide what transactions to execute in what order.
           var transactions = []
           transactions.push(data.toString());
           Ledger.commitTransactions(transactions);
@@ -42,6 +42,39 @@ var setup = function(_options) {
     });
   })
 }
+
+// Hashgraph Consensus Algorithm
+// The following is an attempt to implement algorithm defined in white paper by Leemon Baird
+// http://www.swirlds.com/wp-content/uploads/2016/06/SWIRLDS-TR-2016-01.pdf
+function gossip() {
+  // TODO: 'finalize' current event
+  // TODO: pick random node
+  // TODO: find events that we think that node does not know
+  // TODO: send all the events to the node
+}
+
+function receiveGossip() {
+  // TODO: merge received events with hashgraph in memory
+  // TODO: create new event proving receipt of gossip
+  // TODO: 'open up' that event to record new transactions
+  consensus();
+}
+
+function consensus() {
+  // TODO: divideRounds
+  // TODO: decideFame
+  // TODO: findOrder
+  // TODO: apply all transactions of events which's order was calculated
+}
+
+// This is called locally (not from the network) when the user wants to add transaction
+function newTransaction() {
+  // TODO: if there is no 'current recording event', create new event
+  // TODO: record the transaction onto the event
+  // TODO: after a while, gossip the event
+  // TODO: as soon as consensus is reached on the order of this event, apply the transactions
+}
+
 
 
 module.exports = {

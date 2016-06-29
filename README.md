@@ -1,14 +1,14 @@
 # Stefan.co.jp
 
-The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) with cryptographic values that can be stored and tracked in a blockchain. It also contains code for an experimental new blockchain technology called QuantumLedger.
+The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) with cryptographic values that can be stored and tracked in a blockchain. It also contains code for an experimental new ~~blockchain~~ hashgraph technology called QuantumLedger.
 
 #### What is this about?
 
 Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed, regulated company shares (kabushiki) utilizing blockchain technology. 
 
-Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain.
+Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain or hashgraph.
 
-The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based blockchain called `QuantumLedger`. This experimental blockchain is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
+The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based hashgraph called `QuantumLedger`. This experimental hashgraph is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
 
 At the same time, alternative efforts are underway to research the feasability to store the shares inside the [Hyperledger Fabric](http://github.com/hyperledger/fabric) using a smart contract implemented in [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). This smart contract contains a list of public keys (addresses) and the shares (stake) that belong to this address. A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
 
@@ -51,7 +51,7 @@ Yes. All you have to do is to register your public key with your government. The
 
 ## QuantumLedger
 
-The QuantumLedger is an experimental minimalistic blockchain written completely in javascript. 
+The QuantumLedger is an experimental hashgraph written completely in javascript. 
 
 It has no enrollment, no member service, no user registrations or "accounts, and no native currency or "fuel".
 

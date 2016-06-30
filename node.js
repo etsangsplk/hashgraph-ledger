@@ -59,7 +59,10 @@ var setup = function(_options) {
 // event hash | payload | position
 
 // nodes table
-// some-name-readable-for-humans | publickey | address | port | lastactivity (milli)
+// some-name-readable-for-humans | publickey | address | port | lastactivity (milli) | contract | state (json object)
+
+// data
+// key | value
 
 var currentEvent;
 currentEvent = {

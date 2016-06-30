@@ -1,63 +1,22 @@
-# Stefan.co.jp
+# QuantumLedger
 
-The code in this repository contains the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) with cryptographic values that can be stored and tracked in a blockchain. It also contains code for an experimental new ~~blockchain~~ hashgraph technology called QuantumLedger.
+The QuantumLedger is an experimental hashgraph written completely in javascript. It is in active development and not yet ready to be used.
 
-#### What is this about?
+Hashgraph is a consensus algorithm that assumes knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph technology is still not very well understood by large parts of the community but seems far superior to blockchain-based technologies. Hashgraph has good chances to obsolete all blockchain-based networks.
 
-Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed, regulated company shares (kabushiki) utilizing blockchain technology. 
+QuantumLedger provides only one implementation of hashgraph that is best described by features it does NOT have:
 
-Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain or hashgraph.
+  - no enrollment
+  - no member service
+  - no user registrations or "accounts"
+  - no root account or central authority
+  - no native currency
+  - no "fuel"
+  - no certificate authority
 
-The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based hashgraph called `QuantumLedger`. This experimental hashgraph is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
+Contracts on QuantumLedger are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
 
-At the same time, alternative efforts are underway to research the feasability to store the shares inside the [Hyperledger Fabric](http://github.com/hyperledger/fabric) using a smart contract implemented in [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). This smart contract contains a list of public keys (addresses) and the shares (stake) that belong to this address. A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
-
-Currently, shareholders can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
-
-    -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAojjKH5tGflndQLj0T2i5
-    Fg24XLKShgjVgERoq8A2LDyheLiKtru2ThKTagWJ6hgc4U5CsqJdofBldyF21h+0
-    jbe6zrm/RzYADgSINtzdM7j1WpcgJo8BsNCyqY/0LhpffToF3kmg1SVM6fUMYMrE
-    hiLs+lFHK3iNmvz6Zg5TBP2+zPguys0v+Ff/pFT4zkMlRSxJcsRcg5yzI9wnkf7i
-    6lV1BNWijKRq+abEJKrr6gooFtZ1nxVdukdQvJJiC6I7mizX5C98nKN9govUF0Am
-    4JNxYVIuMkgdY0TYMDQmtJHevD7HTTL7G2cXO6IKmpkoCdgPQC+2U122ZswMcPCU
-    dwIDAQAB
-    -----END PUBLIC KEY-----
-    
-
-#### JWT claim name specification
-
-Stefan Corporation is using the JWT claim name `shares` to store the amount of shares held by the subscriber.
-
-The claim payload is a JSON object similar to
-
-    {
-        shares: 1,
-        sub: 'stefan.co.jp',
-        iss: public key,
-        jti: a unique identifier,
-        iat: a unix timestamp specifying the date of issuance
-    }
-
-The claim name `shares` is used to specify the amount of shares a stake holder of an entity referenced in the `iss` claim is owning. The value of the `sub` claim should be resolvable to a host using standard DNS lookup methods and the host should provide sufficient information via HTTP to uniquely identify the legal entity (company) referenced in the `iss` claim and the host should make the public key retrievable via HTTP.
-
-#### Become a shareholder
-
-There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
-
-#### Can my company use this to issue shares?
-
-Yes. All you have to do is to register your public key with your government. The easiest way to do this is to amend the publicly auditable articles of incorporation to include the public key. You can then simply issue shares by running `node allot.js`. 
-
-## QuantumLedger
-
-The QuantumLedger is an experimental hashgraph written completely in javascript. 
-
-It has no enrollment, no member service, no user registrations or "accounts, and no native currency or "fuel".
-
-Contracts are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
-
-### Key Generation
+## Key Generation
 
 Run the following commands to create a public/private keypair that you can use with QuantumLedger:
 
@@ -71,7 +30,7 @@ If you want to protect your private key with a passphrase, use:
     
 NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the ledger.
 
-### Contracts
+## Contracts
 
 A QuantumLedger contract is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
@@ -96,7 +55,7 @@ A contract should not attempt to modify the ledger after it called resolve() or 
 
 Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
 
-### Transactions
+## Transactions
 
 A transaction changes the ledger in some way.
 
@@ -128,7 +87,7 @@ A transaction can be executed like this.
       // TODO: Check if transaction has been executed in the next block.  
     })
 
-### Nodes
+## Nodes
 
 The QuantumLedger Network is supposed to be a public network of nodes exchanging signed transactions and maintaining consensus over the state over the replicated ledger. However, a consensus mechanism is currently not implemented and networking is only rudimentary and not based on any whitepaper. It's definitely not "production ready". The QuantumLedger Network only supports IPv6.
 
@@ -138,7 +97,7 @@ To run a local node, simply run
 
 To add another node to the known network, run
 
-    Node.addOtherNode(publicKey, ip6address:port)
+    Node.addOtherNode(publicKey, address, port)
 
 To send a transaction into the network run
 
@@ -146,4 +105,55 @@ To send a transaction into the network run
     
 Note that the network currently sends the transaction as a simple UDP datagram to all known nodes. There is no guarantee that the transaction actually reaches other nodes. 
 
-When starting a node for the first time, it will not have any information about the state of the ledger and should up with the rest of the network before executing contracts. It has not been decided how to do this, yet.
+When starting a node for the first time, it will not have any information about the state of the ledger and should sync up with the rest of the network before executing contracts. To do this, we use the hashgraph consensus algorithm. The implementation of this is a currently ongoing effort.
+
+# Stefan.co.jp
+
+The code in this repository will also contain the source to the [Stefan Corporation Website](https://stefan.co.jp) and tools to issue regulated company shares (kabushiki) with cryptographic values that can be stored and tracked, for example in a blockchain or hashgraph. 
+
+### What is this about?
+
+Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is an IT and Security Consulting company founded in Japan, and is the first company in the world to issue and trade cryptographically signed, regulated company shares (kabushiki). 
+
+Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain or hashgraph.
+
+The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based hashgraph called `QuantumLedger`. This experimental hashgraph is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
+
+At the same time, alternative efforts are underway to research the feasability to store the shares inside the [Hyperledger Fabric](http://github.com/hyperledger/fabric) using a smart contract implemented in [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). This smart contract contains a list of public keys (addresses) and the shares (stake) that belong to this address. A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
+
+Currently, shareholders can validate a Stefan Corporation share on the [JWT website](http://jwt.io) using the following public key
+
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAojjKH5tGflndQLj0T2i5
+    Fg24XLKShgjVgERoq8A2LDyheLiKtru2ThKTagWJ6hgc4U5CsqJdofBldyF21h+0
+    jbe6zrm/RzYADgSINtzdM7j1WpcgJo8BsNCyqY/0LhpffToF3kmg1SVM6fUMYMrE
+    hiLs+lFHK3iNmvz6Zg5TBP2+zPguys0v+Ff/pFT4zkMlRSxJcsRcg5yzI9wnkf7i
+    6lV1BNWijKRq+abEJKrr6gooFtZ1nxVdukdQvJJiC6I7mizX5C98nKN9govUF0Am
+    4JNxYVIuMkgdY0TYMDQmtJHevD7HTTL7G2cXO6IKmpkoCdgPQC+2U122ZswMcPCU
+    dwIDAQAB
+    -----END PUBLIC KEY-----
+    
+
+### JWT claim name specification
+
+Stefan Corporation is using the JWT claim name `shares` to store the amount of shares held by the subscriber.
+
+The claim payload is a JSON object similar to
+
+    {
+        shares: 1,
+        sub: 'stefan.co.jp',
+        iss: public key,
+        jti: a unique identifier,
+        iat: a unix timestamp specifying the date of issuance
+    }
+
+The claim name `shares` is used to specify the amount of shares a stake holder of an entity referenced in the `iss` claim is owning. The value of the `sub` claim should be resolvable to a host using standard DNS lookup methods and the host should provide sufficient information via HTTP to uniquely identify the legal entity (company) referenced in the `iss` claim and the host should make the public key retrievable via HTTP.
+
+### Become a shareholder
+
+There are several ways to become a shareholder. Visit http://stefan.co.jp for more information.
+
+### Can my company use this to issue shares?
+
+Yes. All you have to do is to register your public key with your government. The easiest way to do this is to amend the publicly auditable articles of incorporation to include the public key. You can then simply issue shares by running `node allot.js`. 

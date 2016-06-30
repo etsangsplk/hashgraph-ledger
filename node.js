@@ -44,17 +44,38 @@ var setup = function(_options) {
 }
 
 // Hashgraph Consensus Algorithm
-// The following is an attempt to implement algorithm defined in white paper by Leemon Baird
+// The following is an attempt to implement the algorithm defined in white paper by Leemon Baird
 // http://www.swirlds.com/wp-content/uploads/2016/06/SWIRLDS-TR-2016-01.pdf
+
+// events table
+// id | publickey | event hash | timestamp (milli) | parent_hash | sender_hash | decided_position
+// publickey: the publickey of the node where the event occured
+// event hash: hash over (timestamp, parent-hash, sender-hash). unique. will be created when event is finalized.
+// parent_hash: the event that occured on the node before
+// sender_hash: the hash of the event that was gossiped and led to the creation of this event
+// decided_position: will be assigned a global position (order) as soon as consensus algorithm decided it
+
+// transactions table
+// event hash | payload | position
+
+// nodes table
+// some-name-readable-for-humans | publickey | address | port | lastactivity (milli)
+
+var currentEvent;
+currentEvent = {
+    
+}
+
 function gossip() {
-  // TODO: 'finalize' current event
+  // TODO: 'finalize' current event (assign hash, save transactions + event in DB)
   // TODO: pick random node
-  // TODO: find events that we think that node does not know
-  // TODO: send all the events to the node
+  // TODO: find events and txs that we think that node does not know
+  // TODO: send all the events and new transactions to the node with a signature
 }
 
 function receiveGossip() {
-  // TODO: merge received events with hashgraph in memory
+  // TODO: save received events and txs in DB and
+  // TODO: merge received events and txs with hashgraph in memory
   // TODO: create new event proving receipt of gossip
   // TODO: 'open up' that event to record new transactions
   consensus();
@@ -74,8 +95,6 @@ function newTransaction() {
   // TODO: after a while, gossip the event
   // TODO: as soon as consensus is reached on the order of this event, apply the transactions
 }
-
-
 
 module.exports = {
   setup: setup,

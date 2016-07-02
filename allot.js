@@ -1,4 +1,4 @@
-var useExperimentalBlockchain = true;
+var useExperimentalBlockchain = false;
 
 var fs = require('fs');
 var readline = require('readline');

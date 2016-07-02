@@ -1,0 +1,1 @@
+{"$$indexCreated":{"fieldName":"__publicKey","unique":false,"sparse":false}}

@@ -12,7 +12,7 @@ module.exports = {
     
     var verifier = crypto.createVerify('RSA-SHA256');
     var valid = verifier.verify(publicKey, signature, 'base64');
-    if (!valid) throw 'Invalid Transaction Signature';
+    if (!valid) throw 'Invalid Signature';
     
     return claims;
   },

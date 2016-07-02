@@ -53,7 +53,7 @@ A contract execution can end in four ways:
 
 A contract should not attempt to modify the ledger after it called resolve() or reject(). If a contract should be considered fulfilled, it has to call resolve(result) . `result` may not be undefined. Note that the storage engine currently does not support ACID transactions, meaning changes to the the ledger are not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
 
-Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/stefan.co.jp/blob/master/simple_contracts.js) file.
+Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/quantumledger/blob/master/simple_contracts.js) file.
 
 ## Transactions
 
@@ -133,6 +133,7 @@ Currently, shareholders can validate a Stefan Corporation share on the [JWT webs
     dwIDAQAB
     -----END PUBLIC KEY-----
     
+While the blockchain or hashgraph technology has not been decided, shares are stored in the [issued_shares.csv](https://github.com/buhrmi/quantumledger/blob/master/issued_shares.csv) file. They will be transfered to the network when the decision has been made.
 
 ### JWT claim name specification
 
@@ -156,4 +157,4 @@ There are several ways to become a shareholder. Visit http://stefan.co.jp for mo
 
 ### Can my company use this to issue shares?
 
-Yes. All you have to do is to register your public key with your government. The easiest way to do this is to amend the publicly auditable articles of incorporation to include the public key. You can then simply issue shares by running `node allot.js`. 
+Yes. All you have to do is to register your public key with your government. The easiest way to do this is to amend the articles of incorporation to include the public key and provide a notarized public record. As long as the hashgraph network is not available, shares are being stored in the `issued_shares.csv` file. After you have created your own key files (see section on key generation), you can then simply issue shares by running `node allot.js`. This will add your shares to the `issued_shares.csv` file. Please submit a pull request with the updated `issued_shares.csv`. In the pull request comment, please provide a link where you have publicized the articles of incorporation including your public key.

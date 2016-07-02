@@ -84,12 +84,12 @@ A transaction can be executed like this.
       
     })
     .then(function(result) {
-      // TODO: Check if transaction has been executed in the next block.  
+      // TODO: Do things.  
     })
 
 ## Nodes
 
-The QuantumLedger Network is supposed to be a public network of nodes exchanging signed transactions and maintaining consensus over the state over the replicated ledger. However, a consensus mechanism is currently not implemented and networking is only rudimentary and not based on any whitepaper. It's definitely not "production ready". The QuantumLedger Network only supports IPv6.
+The QuantumLedger Network is still under development. One node in the network will contain a local hashgraph made of events. As soon as the consensus algorithm can assign a global position to an event, the transactions contained in the event are executed. Please refer to the [whitepaper](http://www.swirlds.com/wp-content/uploads/2016/06/2016-05-31-Overview-of-Swirlds-Hashgraph-1.pdf) to learn more about hashgraph consensus. The QuantumLedger Network only supports IPv6.
 
 To run a local node, simply run
 

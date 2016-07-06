@@ -11,6 +11,7 @@ module.exports = {
     if (!publicKey) publicKey = claims.iss;
     
     var verifier = crypto.createVerify('RSA-SHA256');
+    verifier.update(parts[0] + '.' + parts[1]);
     var valid = verifier.verify(publicKey, signature, 'base64');
     if (!valid) throw 'Invalid Signature';
     

@@ -3,11 +3,8 @@
 // Database that stores the current state. Can be recreated by replaying the history.
 var ledgerStateFile = 'ledgerState.txt';
 
-// Stores every transaction ever recorded. Append-only.
+// Stores every transaction ever applied. In correct consensus-order. Append-only.
 var ledgerHistoryFile = 'ledgerHistory.txt';
-
-// Stores the last blockchain hash
-var blockHashFile = 'ledgerHash.txt';
 
 var fs = require('fs');
 var crypto = require('crypto');
@@ -20,7 +17,6 @@ var ledgerState = new Datastore({filename: ledgerStateFile});
 ledgerState.ensureIndex({fieldName: '__publicKey'});
 ledgerState.loadDatabase();
 
-var currentBlockHash = fs.readFileSync(blockHashFile).toString();
 var count = 0;
 
 
@@ -37,8 +33,7 @@ function init() {
     })
     .on('end', function() {
       var ledger = {
-        index: count,
-        hash: currentBlockHash
+        index: count
       }
       resolve(ledger);
     });
@@ -47,11 +42,9 @@ function init() {
 
 
 function serializeAndSign(tx, privateKey, passPhrase) {
-  if (!tx.parentBlockHash) tx.parentBlockHash = currentBlockHash;
   if (!tx.publicKey) tx.publicKey = ''; // TODO: extract from privateKey
   var payload = {
     contract: tx.contract.toString(),
-    hash: tx.parentBlockHash.toString(),
     args: tx.args,
     iss: tx.publicKey.toString()
   }
@@ -77,7 +70,7 @@ function runContractInVm(promiseFn, globals) {
   
 }
 
-// XXX: This is not final at all. TODO: Switch to postgres using pg-promise
+// XXX: This is not final at all. TODO: Switch to postgres
 function getLedgerInterface(database, publicKey) {
   // Update variables of contract
   var update = function(select, updates, callback) {
@@ -122,12 +115,9 @@ function commitTransactions(serializedTransactions) {
       
       tx = {
         contract: payload.contract,  // contract is promise string, eg: "function(resolve, reject) { ... }"
-        parentBlockHash: payload.hash,
         publicKey: payload.iss,
         args: payload.args
       }
-      
-      if (currentBlockHash != tx.parentBlockHash) throw "Wrong parent block hash";
       
       // Save contract in blockchain
       ledgerState.update({__publicKey: tx.publicKey, __type: 'contract'}, {$set: {__contract: tx.contract}}, {upsert: true})
@@ -148,7 +138,7 @@ function commitTransactions(serializedTransactions) {
   // Apply all promised transactions
   return Promise.all(promises)
   .then(function() {
-    // TODO: calculate and save hash of the new block
+    // TODO: things
   })
   .catch(function(err) {
     console.error(err);

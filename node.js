@@ -50,7 +50,7 @@ var setup = function(_options) {
 // events table
 // id | publickey | event hash | timestamp (milli) | parent_hash | sender_hash | decided_position
 // publickey: the publickey of the node where the event occured
-// event hash: hash over (timestamp, parent-hash, sender-hash). unique. will be created when event is finalized.
+// event hash: hash over (timestamp, parent-hash, sender-hash, pubkey). unique.
 // parent_hash: the event that occured on the node before
 // sender_hash: the hash of the event that was gossiped and led to the creation of this event
 // decided_position: will be assigned a global position (order) as soon as consensus algorithm decided it

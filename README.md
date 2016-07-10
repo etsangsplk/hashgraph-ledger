@@ -1,10 +1,10 @@
-# QuantumLedger
+# Consensus Network
 
-The QuantumLedger is an experimental hashgraph written completely in javascript. It is in active development and not yet ready to be used.
+The Consensus Network is an experimental distributed hashgraph structure written completely in javascript. It is in active development and not yet ready to be used.
 
-Hashgraph is a consensus algorithm that assumes knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph technology is still not very well understood by large parts of the community but seems far superior to blockchain-based technologies. Hashgraph has good chances to obsolete all blockchain-based networks.
+Hashgraph is a consensus algorithm that assumes knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph technology is therefore far superior to blockchain-based technologies. Hashgraph has good chances to obsolete all blockchain-based networks.
 
-QuantumLedger provides only one implementation of hashgraph that is best described by features it does NOT have:
+The Consensus Network provides an implementation of hashgraph that is best described by features it does NOT have:
 
   - no enrollment
   - no member service
@@ -14,11 +14,11 @@ QuantumLedger provides only one implementation of hashgraph that is best describ
   - no "fuel"
   - no certificate authority
 
-Contracts on QuantumLedger are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
+Contracts on the Consensus Network are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
 
 ## Key Generation
 
-Run the following commands to create a public/private keypair that you can use with QuantumLedger:
+Run the following commands to create a public/private keypair that you can use with the Consensus Network:
 
     openssl genrsa -out private_key.pem 2048
     openssl rsa -in private_key.pem -pubout -out public_key.pem
@@ -28,11 +28,11 @@ If you want to protect your private key with a passphrase, use:
     openssl genrsa -passout pass:mypassphrase -out private_key.pem 2048
     openssl rsa -in private_key.pem -passin pass:mypassphrase -pubout -out public_key.pem
     
-NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the ledger.
+NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the network.
 
 ## Contracts
 
-A QuantumLedger contract is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+A Consensus Network contract is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
     var myContract = function(resolve, reject) {
       ledger.doSomething().then(resolve);
@@ -40,7 +40,7 @@ A QuantumLedger contract is just a javascript promise body. Read more about java
     
 The following variables are accessible through the global scope of the contract VM:
 
-  - `ledger`: The interface to interact with the ledger state. Note that this interface is not finalized and therefore not yet documented.
+  - `state`: The interface to interact with the consensus network state. Note that this interface is not finalized and therefore not yet documented.
   - `caller`: The public key of the calling contract. undefined during deployment context.
   - arguments passed to the contract
 
@@ -53,11 +53,11 @@ A contract execution can end in four ways:
 
 A contract should not attempt to modify the ledger after it called resolve() or reject(). If a contract should be considered fulfilled, it has to call resolve(result) . `result` may not be undefined. Note that the storage engine currently does not support ACID transactions, meaning changes to the the ledger are not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
 
-Note: At this point in time, the API to interact with the ledger state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/quantumledger/blob/master/simple_contracts.js) file.
+Note: At this point in time, the API to interact with the network state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/consensus/blob/master/simple_contracts.js) file.
 
 ## Transactions
 
-A transaction changes the ledger in some way.
+A transaction changes the network state in some way.
 
 A transaction can be executed like this.
     
@@ -89,7 +89,7 @@ A transaction can be executed like this.
 
 ## Nodes
 
-The QuantumLedger Network is still under development. One node in the network will contain a local hashgraph made of events. As soon as the consensus algorithm can assign a global position to an event, the transactions contained in the event are executed. Please refer to the [whitepaper](http://www.swirlds.com/wp-content/uploads/2016/06/2016-05-31-Overview-of-Swirlds-Hashgraph-1.pdf) to learn more about hashgraph consensus. The QuantumLedger Network only supports IPv6.
+The Consensus Network is still under development. One node in the network will contain a local hashgraph made of events. As soon as the consensus algorithm can assign a global position to an event, the transactions contained in the event are executed. Please refer to the [whitepaper](http://www.swirlds.com/wp-content/uploads/2016/06/2016-05-31-Overview-of-Swirlds-Hashgraph-1.pdf) to learn more about hashgraph consensus. The Consensus Network only supports IPv6.
 
 To run a local node, simply run
 
@@ -117,7 +117,7 @@ Stefan Corporation (ステファン株式会社, sutefuan kabushiki gaisha) is a
 
 Issued shares take the form of JSON web tokens that embed the amount of shares in the claim payload. These tokens can be created offline using code in this repository and can be stored inside a blockchain or hashgraph.
 
-The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based hashgraph called `QuantumLedger`. This experimental hashgraph is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
+The blockchain technology that will be responsible to store the tokens has not been decided yet. Stefan Corporation is currently researching and developing a new javascript-based hashgraph called `Consensus Network`. This experimental hashgraph is still in the early stages and uses [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) public keys for addressing purposes.
 
 At the same time, alternative efforts are underway to research the feasability to store the shares inside the [Hyperledger Fabric](http://github.com/hyperledger/fabric) using a smart contract implemented in [chaincode](https://github.com/hyperledger/fabric/blob/master/docs/API/SandboxSetup.md). This smart contract contains a list of public keys (addresses) and the shares (stake) that belong to this address. A collaborative project proposal can be found [here](https://docs.google.com/document/d/1YQ69FXUXAhw30LlJ4t5RFG4KxsCkvpu1oqpgqBZVr14/edit?usp=sharing). 
 
@@ -133,7 +133,7 @@ Currently, shareholders can validate a Stefan Corporation share on the [JWT webs
     dwIDAQAB
     -----END PUBLIC KEY-----
     
-While the blockchain or hashgraph technology has not been decided, shares are stored in the [issued_shares.csv](https://github.com/buhrmi/quantumledger/blob/master/issued_shares.csv) file. They will be transfered to the network when the decision has been made.
+While the blockchain or hashgraph technology has not been decided, shares are stored in the [issued_shares.csv](https://github.com/buhrmi/consensus/blob/master/issued_shares.csv) file. They will be transfered to the network when the decision has been made.
 
 ### JWT claim name specification
 

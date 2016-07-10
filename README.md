@@ -13,9 +13,22 @@ The Consensus Network provides an implementation of hashgraph that is best descr
   - no native currency
   - no "fuel"
   - no certificate authority
+  - no genesis ledger
 
 Contracts on the Consensus Network are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
 
+## Overview
+
+The Consensus Network project provides three modules, `Node`, `Ledger`, and `UI`.
+
+  - Node: Provides networking and consensus algorithm
+  - Ledger: Handles transactions after consesus agrees on execution
+  - UI: A web application that accesses the HTTP interface of a node
+
+# Get Started
+
+    #TODO
+    
 ## Key Generation
 
 Run the following commands to create a public/private keypair that you can use with the Consensus Network:

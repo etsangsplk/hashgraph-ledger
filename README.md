@@ -1,6 +1,6 @@
 # Consensus Network
 
-The Consensus Network is an experimental distributed hashgraph structure written completely in javascript. It is in active development and not yet ready to be used.
+The Consensus Network is an experimental distributed [hashgraph](https://en.wikipedia.org/wiki/Hashgraph) structure written completely in javascript. It is in active development and not yet ready to be used.
 
 Hashgraph is a consensus algorithm that assumes knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph technology is therefore far superior to blockchain-based technologies. Hashgraph has good chances to obsolete all blockchain-based networks.
 

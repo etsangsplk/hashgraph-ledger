@@ -41,7 +41,7 @@ If you want to protect your private key with a passphrase, use:
     openssl genrsa -passout pass:mypassphrase -out private_key.pem 2048
     openssl rsa -in private_key.pem -passin pass:mypassphrase -pubout -out public_key.pem
     
-NOTE: If your private key file gets compromised or you lose the passphrase, it will become impossible to claim your stakes stored in the network.
+NOTE: Do not lose your private key file or forget your passphrase. If you do, you will lose all value stored under your public key.
 
 ## Contracts
 
@@ -53,7 +53,7 @@ A Consensus Network contract is just a javascript promise body. Read more about 
     
 The following variables are accessible through the global scope of the contract VM:
 
-  - `state`: The interface to interact with the consensus network state. Note that this interface is not finalized and therefore not yet documented.
+  - `ledger`: The interface to interact with the ledger managed by the consensus network. Note that this interface is not finalized and therefore not yet documented.
   - `caller`: The public key of the calling contract. undefined during deployment context.
   - arguments passed to the contract
 
@@ -70,7 +70,7 @@ Note: At this point in time, the API to interact with the network state from wit
 
 ## Transactions
 
-A transaction changes the network state in some way.
+A transaction changes the network state or the ledger in some way.
 
 A transaction can be executed like this.
     

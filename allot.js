@@ -28,9 +28,8 @@ prompt([
       iss: publicKey
   };
   token = createToken(claims, privateKey, answers.passphrase);
-  unsignedToken = token.split('.')[0] + '.' + token.split('.')[1];
   
-  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+unsignedToken+"\n", function(err) {
+  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+token+"\n", function(err) {
       if (err) console.error(err.stack);
   })
   console.log(token);

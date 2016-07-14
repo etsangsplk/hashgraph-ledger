@@ -1,4 +1,6 @@
 {
+  "name": "hashgraph",
+  "version": "0.0.1",
   "dependencies": {
     "basic-auth": "^1.0.4",
     "co": "^4.6.0",

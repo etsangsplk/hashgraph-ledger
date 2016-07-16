@@ -1,7 +1,8 @@
 {
-  "name": "hashgraph",
+  "name": "hashgraph-ledger",
   "version": "0.0.1",
   "dependencies": {
+    "hashgraph": "*",
     "basic-auth": "^1.0.4",
     "co": "^4.6.0",
     "inquirer": "^1.0.3",

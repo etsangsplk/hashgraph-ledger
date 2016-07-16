@@ -1,6 +1,6 @@
 // TODO: use real testing framework
 Ledger = require('./ledger');
-Node = require('./node')
+
 fs = require('fs');
 
 exploitingContract = 'function(resolve, reject){ derp() }); function derp(){ asdf() };function(){ }'
@@ -15,18 +15,17 @@ var tx = {
   args: {identifier: 'some_id', value: 'some_value123'},
   publicKey: testPublicKey
 }
+var serializedTransaction = Ledger.serializeAndSign(tx, testPrivateKey);
 
-Node.setup()
-.then(function() {
-  return Node.sendTransaction(Ledger.serializeAndSign(tx, testPrivateKey))
-})
-.then(function(result) {
-  // TODO: Transaction has been sent (probably. Return meaningful result).
-  // TODO: But we don't know if was included in the block or if it was succesful. Find out!
-})
-.catch(function(err) {
-  console.error(err);
+var hashgraph = require('hashgraph')({
+  database: '',
+  publicKey: testPublicKey
+});
+
+hashgraph.on('ready', function() {
+  hashgraph.sendTransaction(serializedTransaction);
 })
 
-
-// var identity = Ledger.identity(testPrivateKey, testPublicKey)
+hashgraph.on('consensus', function(transactions) {
+  Ledger.commitTransactions(transactions);
+})

@@ -29,7 +29,7 @@ prompt([
   };
   token = createToken(claims, privateKey, answers.passphrase);
   
-  fs.appendFile('issued_shares.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+token+"\n", function(err) {
+  fs.appendFile('captable.csv', iat+','+answers.identifier+','+jti+','+answers.amount+','+token+"\n", function(err) {
       if (err) console.error(err.stack);
   })
   console.log(token);
@@ -37,7 +37,7 @@ prompt([
   // Store token in blockchain as proof-of-stake
   if (useExperimentalBlockchain) {
     var Ledger = require('./ledger');
-    var Node = require('./node');
+    var hashgraph = require('hashgraph')();
     
     var tx = {
       contract: require('./simple_contracts.js').storeValue,
@@ -47,16 +47,12 @@ prompt([
     
     var serializedTransaction = Ledger.serializeAndSign(tx, privateKey, answers.passphrase);
     
-    Node.setup()
-    .then(function() {
-      return Node.sendTransaction(serializedTransaction);
-    })
-    .then(function(result) {
-      // TODO: Transaction has been sent (probably. Return meaningful result).
-      // TODO: But we don't know if was included in the block or if it was succesful. Find out!
-    })
-    .catch(function(err) {
-      console.error(err.stack);
+    hashgraph.on('ready', function() {
+      hashgraph.sendTransaction(serializedTransaction);
+    }
+    
+    hashgraph.on('consensus', function(transactions) {
+      Ledger.commitTransactions(transactions);
     })
   }
   

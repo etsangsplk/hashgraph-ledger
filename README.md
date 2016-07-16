@@ -40,7 +40,7 @@ A contract execution can end in four ways:
 
 A contract should not attempt to modify the ledger after it called resolve() or reject(). If a contract should be considered fulfilled, it has to call resolve(result) . `result` may not be undefined. Note that the storage engine currently does not support ACID transactions, meaning changes to the the ledger are not rolled back if a contract terminates without calling resolve(). We are exploring using postgres as data backend because the postgres transaction scheme fits perfectly onto the javascript promises mechanism.
 
-Note: At this point in time, the API to interact with the network state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/consensus/blob/master/simple_contracts.js) file.
+Note: At this point in time, the API to interact with the network state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [templates.js](https://github.com/buhrmi/hashgraph-ledger/blob/master/templates.js) file.
 
 ## Transactions
 
@@ -51,8 +51,8 @@ A transaction can be executed like this.
     var myPublicKey = fs.readFileSync('./public_key.pem').toString()
     var myPrivateKey = fs.readFileSync('./private_key.pem').toString()
     
-    Ledger = require('./ledger');
-    Hashgraph = require('./hashgraph');
+    Ledger = require('hashgraph-ledger');
+    Hashgraph = require('hashgraph');
     
     hashgraph = Hashgraph({
       database: 'postgresql://localhost/hashgraph',

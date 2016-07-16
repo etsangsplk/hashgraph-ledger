@@ -1,7 +1,9 @@
 {
   "name": "hashgraph-ledger",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "index.js",
+  "description": "A distributed ledger running on top of the hashgraph",
+  "repository": "http://github.com/buhrmi/hashgraph-ledger",
   "dependencies": {
     "hashgraph": "*",
     "basic-auth": "^1.0.4",

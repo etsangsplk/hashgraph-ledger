@@ -1,10 +1,6 @@
-# Hashgraph
+# Hashgraph Ledger
 
-This is a [hashgraph](https://en.wikipedia.org/wiki/Hashgraph) implementation written in javascript. It is currently in development and not yet ready to be used.
-
-## Hashgraph Network
-
-The Hashgraph Network is an experimental distributed ledger written in javascript on top of the hashgraph. It is a network of interconnected peers that work together to maintain consensus over the state of a distributed ledger. The list of participating node can be dynamic, and nodes can join and leave the network as they please without causing overhead.
+The Hashgraph Ledger is an experimental network running on top of the [hashgraph](http://github.com/buhrmi/hashgraph). It is a network of interconnected peers that work together to maintain consensus over the state of a distributed ledger. The list of participating node can be dynamic, and nodes can join and leave the network as they please without causing overhead.
 
 To maintain consensus, the network employs a new consensus algorithm called hashgraph consensus. This algorithm exploits knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph network is therefore far superior to any blockchain-based network that require some kind of proof-of-X.
 
@@ -21,72 +17,9 @@ The Hashgraph Network provides a distributed ledger implementation that has the 
 
 Contracts on the Hashgraph Network are just javascript promises that live inside a virtual machine and may or may not resolve at any time. They can modify ledger state and call contracts deployed by other users in the network. A contract owner is defined by a public key.
 
-## Get Started
+## Contracts
 
-You can use hashgraph for any javascript project that is run on several nodes that require some kind of consensus. For example for a replicated log, or state machine.
-
-### Install Hashgraph
-
-First, install the hashgraph package.
-
-    npm install hashgraph --hashgraph
-    
-### Key Generation
-
-Each node in the hashgraph requires its own public/private keypair. It is using standard [RFC 4716](https://tools.ietf.org/html/rfc4716#section-3.4) keys.
-
-Run the following commands to create a public/private keypair:
-
-    openssl genrsa -out private_key.pem 2048
-    openssl rsa -in private_key.pem -pubout -out public_key.pem
-    
-If you want to protect your private key with a passphrase, use:
-
-    openssl genrsa -passout pass:mypassphrase -out private_key.pem 2048
-    openssl rsa -in private_key.pem -passin pass:mypassphrase -pubout -out public_key.pem
-    
-NOTE: Do not lose your private key file or forget your passphrase. If you do, you will lose all value stored under your public key.
-
-### Set up a node
-
-Once you created your keys, you can set up a node and optionally join another node on the network very easily. 
-
-    var myPublicKey = fs.readFileSync('./public_key.pem').toString();
-    var myPrivateKey = fs.readFileSync('./private_key.pem').toString();
-    
-    var hashgraph = require('hashgraph')({
-      database: 'postgresql://localhost/hashgraph',
-      publicKey: myPublicKey,
-      privateKey: myPrivateKey,
-      passphrase: 'somePassPhrase' // optional
-    });
-    
-    // Optionally, join another node on the network
-    hashgraph.join(someIPv6Address);
-
-### Maintain consensus
-
-After joining another node on the network you can submit transactions to the network like this:
-
-    hashgraph.on('ready', function() {
-      hashgraph.sendTransaction('somePayload');
-    })
-    
-After the transaction has been sent to the network, it will try to achieve consensus over the question where to place this transaction in the global order of all transactions in the network. Once consensus has been achieved, the hashgraph will emit an event that you can listen to:
-
-    hashgraph.on('consensus', function(transactions) {
-      // Apply transactions to state machine
-    })
-
-This is all you need to know to use hashgraph with your own projects. Read on for information on how to use the hashgraph ledger.
-
-## Hashgraph Ledger
-
-The hashgraph network includes a state machine that can handle contracts written in javascript. Read on.
-
-### Contracts
-
-A contract on is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+A contract on the hashgraph ledger is just a javascript promise body. Read more about javascript promises [here](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
     var myContract = function(resolve, reject) {
       ledger.doSomething().then(resolve);
@@ -109,7 +42,7 @@ A contract should not attempt to modify the ledger after it called resolve() or 
 
 Note: At this point in time, the API to interact with the network state from within the contract is neither secure nor finalized and still highly experimental. We are providing a library of simple, general-purpose contracts in the [simple_contracts.js](https://github.com/buhrmi/consensus/blob/master/simple_contracts.js) file.
 
-### Transactions
+## Transactions
 
 A transaction changes the network state or the ledger in some way.
 

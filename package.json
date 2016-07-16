@@ -1,6 +1,7 @@
 {
   "name": "hashgraph-ledger",
   "version": "0.0.1",
+  "main": "index.js",
   "dependencies": {
     "hashgraph": "*",
     "basic-auth": "^1.0.4",

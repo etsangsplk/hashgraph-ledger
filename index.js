@@ -149,5 +149,6 @@ function commitTransactions(serializedTransactions) {
 module.exports = {
   init: init,
   commitTransactions: commitTransactions,
-  serializeAndSign: serializeAndSign
+  serializeAndSign: serializeAndSign,
+  templates: require('./templates')
 }

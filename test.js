@@ -1,5 +1,5 @@
 // TODO: use real testing framework
-Ledger = require('./ledger');
+Ledger = require('hashgraph-ledger');
 
 fs = require('fs');
 
@@ -10,7 +10,7 @@ var testPrivateKey = fs.readFileSync('./test_identity_private_key.pem').toString
 
 
 var tx = {
-  contract: require('./simple_contracts.js').storeValue,
+  contract: Ledger.templates.storeValue,
   //contract: exploitingContract,
   args: {identifier: 'some_id', value: 'some_value123'},
   publicKey: testPublicKey

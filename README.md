@@ -1,6 +1,8 @@
 # Hashgraph Ledger
 
-The Hashgraph Ledger is an experimental network running on top of the [hashgraph](http://github.com/buhrmi/hashgraph). It is a network of interconnected peers that work together to maintain consensus over the state of a distributed ledger. The list of participating node can be dynamic, and nodes can join and leave the network as they please without causing overhead.
+(NOTE: This code is not working yet. Don't use it.)
+
+The Hashgraph Ledger is an experimental network running on top of the [hashgraph](http://github.com/buhrmi/hashgraph). It is a network of interconnected peers that work together to maintain consensus over the state of a distributed ledger. Currently, the list of participating nodes needs to be configured manually. But some efforts are underway to find a way to allow joining and leaving without causing large overhead.
 
 To maintain consensus, the network employs a new consensus algorithm called hashgraph consensus. This algorithm exploits knowledge of other peers' knowledge about events (similar to "blocks" in traditional blockchains) and uses virtual voting that does not require any extra bandwidth. Hashgraph network is therefore far superior to any blockchain-based network that require some kind of proof-of-X.
 
